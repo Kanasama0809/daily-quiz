@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#17182b">
+<title>DAILY QUIZ — デイリークイズ</title>
+<style>
+:root{--bg:#10111f;--panel:#1b1d33;--panel2:#242741;--text:#f5f6ff;--muted:#a8abc8;--accent:#a99bff;--accent2:#79e3c0;--danger:#ff8c9b;--line:#343754}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0,#29254f 0,transparent 35%),var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;min-height:100vh}
+button,input{font:inherit}button{cursor:pointer;border:0}button:disabled{opacity:.45;cursor:not-allowed}
+.wrap{max-width:980px;margin:auto;padding:22px 16px 56px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:28px}.brand{font-size:18px;font-weight:900;letter-spacing:.12em}.brand span{color:var(--accent)}.user-pill{font-size:13px;color:var(--muted);background:var(--panel);border:1px solid var(--line);padding:8px 12px;border-radius:99px}
+.hero{padding:26px 0 22px}.eyebrow{color:var(--accent2);font-size:12px;font-weight:800;letter-spacing:.15em}.hero h1{font-size:clamp(30px,6vw,48px);line-height:1.15;margin:10px 0}.hero p{color:var(--muted);margin:0;line-height:1.8}
+.nav{display:flex;gap:8px;overflow:auto;padding:4px 0 18px}.nav button{white-space:nowrap;padding:10px 15px;border-radius:12px;background:transparent;color:var(--muted);border:1px solid var(--line)}.nav button.active{background:var(--accent);color:#18152b;border-color:var(--accent);font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.card{background:linear-gradient(150deg,var(--panel),#17192d);border:1px solid var(--line);border-radius:20px;padding:18px;min-width:0}.stat-label{color:var(--muted);font-size:12px}.stat-value{font-size:30px;font-weight:900;margin-top:7px}.stat-sub{color:var(--muted);font-size:12px;margin-top:4px}.section-title{font-size:20px;margin:0 0 14px}.home-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.primary{background:var(--accent);color:#17152b;padding:13px 18px;border-radius:13px;font-weight:850}.secondary{background:var(--panel2);color:var(--text);padding:12px 16px;border:1px solid var(--line);border-radius:13px;font-weight:700}.tiny{font-size:12px;color:var(--muted);line-height:1.7}.panel{margin-top:16px}.hidden{display:none!important}
+.progress-row{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;margin-bottom:10px}.progress{height:7px;background:#343650;border-radius:99px;overflow:hidden}.progress div{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;transition:width .2s}
+.q-meta{display:flex;gap:8px;align-items:center;color:var(--accent2);font-size:12px;font-weight:800}.question{font-size:clamp(21px,4vw,28px);line-height:1.55;margin:18px 0 22px}.answers{display:grid;gap:10px}.answer{width:100%;text-align:left;background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:15px;border-radius:14px;display:flex;gap:12px;align-items:center}.answer .letter{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:9px;background:#343653;color:var(--accent);font-weight:900}.answer.selected{border-color:var(--accent);background:#333052}.answer.correct{border-color:var(--accent2);background:#18382f}.answer.wrong{border-color:var(--danger);background:#432631}.feedback{padding:13px;border-radius:12px;background:var(--panel2);margin-top:14px;line-height:1.7;font-size:14px}.quiz-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px}.table{width:100%;border-collapse:collapse}.table th,.table td{text-align:left;padding:13px 8px;border-bottom:1px solid var(--line);font-size:14px}.table th{font-size:12px;color:var(--muted);font-weight:700}.table tr.me td{color:var(--accent2);font-weight:800}.rank{width:36px;color:var(--muted)}.empty{padding:30px 14px;text-align:center;color:var(--muted);line-height:1.8}.field{display:grid;gap:7px;margin:16px 0}.field label{font-size:13px;color:var(--muted)}input{width:100%;padding:13px 14px;border-radius:12px;background:var(--bg);border:1px solid var(--line);color:var(--text)}.toast{margin-top:12px;color:var(--accent2);font-size:13px}.foot{margin-top:28px;color:#777b9f;font-size:11px;line-height:1.8}
+@media(max-width:650px){.grid{grid-template-columns:1fr}.hero{padding-top:12px}.card{padding:16px}.top{margin-bottom:14px}.stat-value{font-size:26px}.table th,.table td{padding:11px 5px;font-size:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><div class="brand">DAILY <span>QUIZ</span></div><div class="user-pill" id="userPill">ゲスト</div></header>
+<section id="setup" class="card hidden">
+  <div class="eyebrow">WELCOME TO DAILY QUIZ</div><h2>ニックネームを決めよう</h2><p class="tiny">1日10問の総合クイズに挑戦。名前はこのブラウザに保存されます。</p>
+  <div class="field"><label for="nickname">ニックネーム（2〜16文字）</label><input id="nickname" maxlength="16" minlength="2" placeholder="例：クイズ好き" autocomplete="nickname"></div>
+  <button class="primary" id="saveNick">この名前で始める</button><div id="setupMsg" class="toast"></div>
+</section>
+<section id="app">
+  <div class="hero"><div class="eyebrow">YOUR DAILY CHALLENGE</div><h1>今日の10問に、<br>挑戦しよう。</h1><p>総合クイズで知識を試そう。過去に自分が解いた問題は、原則として再出題されないよ。</p></div>
+  <nav class="nav">
+    <button class="active" data-tab="home">ホーム</button><button data-tab="quiz">今日のクイズ</button><button data-tab="daily">デイリー順位</button><button data-tab="total">累計ランキング</button><button data-tab="profile">マイ記録</button>
+  </nav>
+  <main>
+    <section id="tab-home">
+      <div class="grid">
+        <div class="card"><div class="stat-label">今日のスコア</div><div class="stat-value" id="todayScore">—</div><div class="stat-sub" id="todaySub">今日の挑戦はまだ</div></div>
+        <div class="card"><div class="stat-label">累計正解数</div><div class="stat-value" id="totalCorrect">0</div><div class="stat-sub">これまでの正解</div></div>
+        <div class="card"><div class="stat-label">連続挑戦</div><div class="stat-value" id="streak">0日</div><div class="stat-sub">毎日続けよう</div></div>
+      </div>
+      <div class="card panel"><div class="eyebrow">TODAY'S QUIZ</div><h2 class="section-title" id="homeQuizTitle">10問チャレンジ</h2><p class="tiny" id="homeQuizDesc">全10問・選択式。途中で閉じても、この端末では進行状況を保存します。</p><div class="home-actions"><button class="primary" id="startQuiz">今日のクイズを始める</button><button class="secondary" id="goDaily">ランキングを見る</button></div></div>
+      <div class="foot">試作品：ランキングはこのブラウザ内のデータのみ。公開版で全ユーザー共通にするには、サーバー側のデータベース接続が必要です。</div>
+    </section>
+    <section id="tab-quiz" class="hidden">
+      <div class="card">
+        <div class="progress-row"><span id="questionCount">第1問 / 10</span><span id="answeredCount">回答 0 / 10</span></div><div class="progress"><div id="progressBar"></div></div>
+        <div id="questionArea"><div class="q-meta"><span>総合クイズ</span><span>•</span><span id="qDifficulty">ウォームアップ</span></div><div class="question" id="questionText"></div><div class="answers" id="answers"></div><div id="feedback" class="feedback hidden"></div><div class="quiz-footer"><span class="tiny" id="quizNote">回答は変更できません</span><button class="primary" id="nextQuestion" disabled>回答する</button></div></div>
+        <div id="resultArea" class="hidden"><div class="eyebrow">CHALLENGE COMPLETE</div><h2 class="section-title">今日の結果</h2><div class="stat-value" id="resultScore">0 / 10</div><p id="resultAccuracy"></p><p class="tiny" id="resultMessage"></p><div class="home-actions"><button class="primary" id="resultDaily">デイリー順位を見る</button><button class="secondary" id="resultHome">ホームに戻る</button></div></div>
+      </div>
+    </section>
+    <section id="tab-daily" class="hidden"><div class="card"><div class="eyebrow">TODAY'S LEADERBOARD</div><h2 class="section-title">デイリーランキング</h2><p class="tiny">正解数 → 正答率 → 回答時間の順で順位を決定する想定です。試作品ではこのブラウザ内の参加記録を表示します。</p><div id="dailyBoard"></div></div></section>
+    <section id="tab-total" class="hidden"><div class="card"><div class="eyebrow">ALL-TIME</div><h2 class="section-title">累計ランキング</h2><p class="tiny">累計正解数の多い順。試作品ではこのブラウザ内の記録です。</p><div id="totalBoard"></div></div></section>
+    <section id="tab-profile" class="hidden"><div class="card"><div class="eyebrow">YOUR RECORD</div><h2 class="section-title">マイ記録</h2><div class="grid"><div><div class="stat-label">挑戦した日数</div><div class="stat-value" id="daysPlayed">0</div></div><div><div class="stat-label">累計正解</div><div class="stat-value" id="profileCorrect">0</div></div><div><div class="stat-label">累計正答率</div><div class="stat-value" id="overallAccuracy">—</div></div></div><div class="panel"><h3>最近の結果</h3><div id="history"></div></div><div class="home-actions"><button class="secondary" id="changeNick">ニックネーム変更</button><button class="secondary" id="resetData">この端末の記録を消去</button></div><p class="tiny">記録を消すと元に戻せません。公開版では本人確認や不正対策も別途設計します。</p></div></section>
+  </main>
+</section>
+</div>
+<script>
+const BANK = [
+{ id:"g001",cat:"科学",q:"水が標準的な気圧で沸騰する温度は？",a:["90℃","100℃","110℃","120℃"],c:1,e:"標準気圧では水は約100℃で沸騰します。"},
+{ id:"g002",cat:"地理",q:"日本で最も面積が大きい都道府県は？",a:["岩手県","長野県","北海道","福島県"],c:2,e:"北海道が日本で最も面積の大きい都道府県です。"},
+{ id:"g003",cat:"歴史",q:"鎌倉幕府を開いた人物は？",a:["足利尊氏","源頼朝","徳川家康","平清盛"],c:1,e:"源頼朝が鎌倉幕府を開きました。"},
+{ id:"g004",cat:"言葉",q:"「杞憂」の意味として正しいものは？",a:["昔の失敗を悔やむこと","必要以上に心配すること","急いで行動すること","人の成功を喜ぶこと"],c:1,e:"杞憂は、必要のないことまであれこれ心配することです。"},
+{ id:"g005",cat:"自然",q:"太陽系で最も大きい惑星は？",a:["土星","地球","木星","海王星"],c:2,e:"木星は太陽系最大の惑星です。"},
+{ id:"g006",cat:"文化",q:"『モナ・リザ』を描いた画家は？",a:["ミケランジェロ","レオナルド・ダ・ヴィンチ","ラファエロ","ゴッホ"],c:1,e:"『モナ・リザ』はレオナルド・ダ・ヴィンチの作品です。"},
+{ id:"g007",cat:"スポーツ",q:"サッカーで、通常1チームがピッチ上で同時にプレーする人数は？",a:["9人","10人","11人","12人"],c:2,e:"ゴールキーパーを含めて1チーム11人です。"},
+{ id:"g008",cat:"科学",q:"元素記号「O」が表す元素は？",a:["金","酸素","オスミウム","水素"],c:1,e:"Oは酸素（Oxygen）の元素記号です。"},
+{ id:"g009",cat:"社会",q:"日本の国会を構成する二つの議院は？",a:["上院と下院","衆議院と参議院","内閣院と司法院","県議会と市議会"],c:1,e:"日本の国会は衆議院と参議院で構成されます。"},
+{ id:"g010",cat:"音楽",q:"オーケストラで一般に指揮者が使う道具は？",a:["弓","タクト","リード","マレット"],c:1,e:"指揮者はタクト（指揮棒）を使うことがあります。"},
+{ id:"g011",cat:"地理",q:"世界で面積が最も大きい国は？",a:["カナダ","中国","アメリカ合衆国","ロシア"],c:3,e:"ロシアは世界最大の国土面積を持ちます。"},
+{ id:"g012",cat:"科学",q:"成人の骨格を構成する骨の数は、およそ何本？",a:["106本","206本","306本","406本"],c:1,e:"成人の骨は一般に約206本とされます。"},
+{ id:"g013",cat:"文学",q:"『吾輩は猫である』の作者は？",a:["芥川龍之介","夏目漱石","森鴎外","太宰治"],c:1,e:"『吾輩は猫である』は夏目漱石の小説です。"},
+{ id:"g014",cat:"数学",q:"15 × 8 の答えは？",a:["100","110","120","130"],c:2,e:"15 × 8 = 120です。"},
+{ id:"g015",cat:"生活",q:"日本の一般的な家庭用コンセントの周波数は地域により何Hz？",a:["20Hzと30Hz","40Hzと50Hz","50Hzと60Hz","60Hzと70Hz"],c:2,e:"日本では東日本が主に50Hz、西日本が主に60Hzです。"},
+{ id:"g016",cat:"生物",q:"植物が光合成で主に取り込む気体は？",a:["酸素","二酸化炭素","窒素","水素"],c:1,e:"光合成では二酸化炭素と水などを使い、有機物を作ります。"},
+{ id:"g017",cat:"歴史",q:"江戸幕府を開いた人物は？",a:["豊臣秀吉","織田信長","徳川家康","徳川吉宗"],c:2,e:"徳川家康が1603年に江戸幕府を開きました。"},
+{ id:"g018",cat:"スポーツ",q:"オリンピックの五輪マークは何個の輪で構成される？",a:["4個","5個","6個","7個"],c:1,e:"五輪マークは5つの輪で構成されています。"},
+{ id:"g019",cat:"食",q:"豆腐の主な原料は？",a:["小麦","大豆","米","トウモロコシ"],c:1,e:"豆腐は大豆から作られます。"},
+{ id:"g020",cat:"宇宙",q:"地球の衛星は？",a:["火星","月","太陽","金星"],c:1,e:"月は地球の自然衛星です。"},
+{ id:"g021",cat:"地理",q:"日本の首都は？",a:["大阪","京都","東京","名古屋"],c:2,e:"日本の首都は東京です。"},
+{ id:"g022",cat:"科学",q:"音が伝わるために必要なものは？",a:["必ず真空","物質を伝わる媒質","必ず太陽光","磁石"],c:1,e:"音は空気や水、固体などの媒質を通じて伝わります。"},
+{ id:"g023",cat:"言葉",q:"「温故知新」の意味に最も近いものは？",a:["古いことを学び新しい知識を得る","急いで結論を出す","人に秘密を話す","失敗を隠す"],c:0,e:"昔のことを研究し、そこから新しい知識や見解を得ることです。"},
+{ id:"g024",cat:"文化",q:"日本の伝統芸能で、能とともに発展した喜劇的な演劇は？",a:["狂言","歌舞伎","文楽","落語"],c:0,e:"狂言は能と関連の深い、日本の伝統的な喜劇です。"},
+{ id:"g025",cat:"数学",q:"正三角形の内角は一つあたり何度？",a:["45度","60度","90度","120度"],c:1,e:"三角形の内角の和は180度。正三角形は3角が等しいため各60度です。"},
+{ id:"g026",cat:"生物",q:"哺乳類に共通する特徴として正しいものは？",a:["必ず卵を産む","乳で子を育てる","必ず水中で暮らす","全て飛べる"],c:1,e:"哺乳類は乳腺から分泌される乳で子を育てる特徴があります。"},
+{ id:"g027",cat:"歴史",q:"日本で明治時代が始まった年は？",a:["1603年","1789年","1868年","1945年"],c:2,e:"明治時代は一般に1868年から始まります。"},
+{ id:"g028",cat:"科学",q:"電流の単位は？",a:["ボルト","ワット","アンペア","オーム"],c:2,e:"電流の単位はアンペア（A）です。"},
+{ id:"g029",cat:"地理",q:"エジプトを流れることで知られる大河は？",a:["アマゾン川","ナイル川","ドナウ川","ミシシッピ川"],c:1,e:"ナイル川はエジプトを流れる代表的な大河です。"},
+{ id:"g030",cat:"生活",q:"信号機で「止まれ」を示す色は？",a:["青","黄","赤","白"],c:2,e:"赤信号は停止を示します。"}
+];
+const KEY="dailyQuizPrototypeV1";
+const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`};
+const yesterday=(date)=>{const d=new Date(date+"T12:00:00");d.setDate(d.getDate()-1);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`};
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+let db=load(),current=null,questionIndex=0,selected=null,answerStarted=0;
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{nickname:"",history:{},seen:[],attempts:{}}}catch{return {nickname:"",history:{},seen:[],attempts:{}}}}
+function save(){localStorage.setItem(KEY,JSON.stringify(db))}
+function ensure(){if(!db.nickname){document.getElementById("setup").classList.remove("hidden");document.getElementById("app").classList.add("hidden")}else{document.getElementById("setup").classList.add("hidden");document.getElementById("app").classList.remove("hidden");document.getElementById("userPill").textContent=db.nickname;renderHome()}}
+function calcStreak(){let n=0,d=today();if(!db.history[d])d=yesterday(d);while(db.history[d]){n++;d=yesterday(d)}return n}
+function getDaily(){return db.history[today()]}
+function getTotal(){return Object.values(db.history).reduce((s,h)=>s+h.correct,0)}
+function getTotalAnswered(){return Object.values(db.history).reduce((s,h)=>s+h.total,0)}
+function renderHome(){const h=getDaily();document.getElementById("todayScore").textContent=h?`${h.correct}/10`:"—";document.getElementById("todaySub").textContent=h?"正答率 "+Math.round(h.correct/10*100)+"%":"今日の挑戦はまだ";document.getElementById("totalCorrect").textContent=getTotal();document.getElementById("streak").textContent=calcStreak()+"日";document.getElementById("startQuiz").textContent=h?"今日の結果を見る":"今日のクイズを始める";document.getElementById("startQuiz").disabled=!!h;document.getElementById("homeQuizTitle").textContent=h?"今日の挑戦は完了！":"10問チャレンジ";document.getElementById("homeQuizDesc").textContent=h?"本日の結果は保存されています。明日また挑戦しよう。":"全10問・選択式。途中で閉じても、この端末では進行状況を保存します。";renderProfile();renderBoards()}
+function setTab(tab){document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));document.querySelectorAll("main>section").forEach(s=>s.classList.add("hidden"));document.getElementById("tab-"+tab).classList.remove("hidden");if(tab==="daily"||tab==="total")renderBoards();if(tab==="profile")renderProfile()}
+document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
+document.getElementById("saveNick").onclick=()=>{const n=document.getElementById("nickname").value.trim();if(n.length<2){document.getElementById("setupMsg").textContent="ニックネームは2文字以上にしてね。";return}db.nickname=n;save();ensure()};
+document.getElementById("startQuiz").onclick=()=>startQuiz();document.getElementById("goDaily").onclick=()=>setTab("daily");
+document.getElementById("nextQuestion").onclick=()=>{if(selected===null)return;const q=current.questions[questionIndex];const ok=selected===q.c;if(ok)current.correct++;current.answers.push({id:q.id,selected,correct:ok});db.seen.push(q.id);save();document.querySelectorAll(".answer").forEach((b,i)=>{b.disabled=true;if(i===q.c)b.classList.add("correct");else if(i===selected)b.classList.add("wrong")});document.getElementById("feedback").textContent=(ok?"正解！ ":"不正解。 ")+q.e;document.getElementById("feedback").classList.remove("hidden");document.getElementById("nextQuestion").textContent=questionIndex===9?"結果を見る":"次の問題へ";document.getElementById("nextQuestion").onclick=advance};
+function startQuiz(){if(getDaily()){setTab("home");return}const unseen=BANK.filter(q=>!db.seen.includes(q.id));if(unseen.length<10){alert(`試作品の問題が不足しています。未出題問題は${unseen.length}問です。実運用では問題バンクを大幅に増やす必要があります。`);return}current={questions:shuffle(unseen).slice(0,10),correct:0,answers:[],started:Date.now()};questionIndex=0;document.getElementById("questionArea").classList.remove("hidden");document.getElementById("resultArea").classList.add("hidden");setTab("quiz");showQuestion()}
+function showQuestion(){selected=null;const q=current.questions[questionIndex];document.getElementById("questionCount").textContent=`第${questionIndex+1}問 / 10`;document.getElementById("answeredCount").textContent=`回答 ${questionIndex} / 10`;document.getElementById("progressBar").style.width=`${questionIndex*10}%`;document.getElementById("qDifficulty").textContent=q.cat;document.getElementById("questionText").textContent=q.q;document.getElementById("answers").innerHTML="";document.getElementById("feedback").classList.add("hidden");["A","B","C","D"].forEach((l,i)=>{const b=document.createElement("button");b.className="answer";b.innerHTML=`<span class="letter">${l}</span><span></span>`;b.querySelector("span:last-child").textContent=q.a[i];b.onclick=()=>{selected=i;document.querySelectorAll(".answer").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");document.getElementById("nextQuestion").disabled=false;document.getElementById("nextQuestion").textContent="回答を確定"};document.getElementById("answers").appendChild(b)});document.getElementById("nextQuestion").disabled=true;document.getElementById("nextQuestion").textContent="回答する";document.getElementById("quizNote").textContent="回答を確定すると変更できません"}
+function advance(){questionIndex++;if(questionIndex<10){document.getElementById("nextQuestion").onclick=()=>{};showQuestion();document.getElementById("nextQuestion").onclick=()=>{if(selected===null)return;const q=current.questions[questionIndex];const ok=selected===q.c;if(ok)current.correct++;current.answers.push({id:q.id,selected,correct:ok});db.seen.push(q.id);save();document.querySelectorAll(".answer").forEach((b,i)=>{b.disabled=true;if(i===q.c)b.classList.add("correct");else if(i===selected)b.classList.add("wrong")});document.getElementById("feedback").textContent=(ok?"正解！ ":"不正解。 ")+q.e;document.getElementById("feedback").classList.remove("hidden");document.getElementById("nextQuestion").textContent=questionIndex===9?"結果を見る":"次の問題へ";document.getElementById("nextQuestion").onclick=advance};}else finishQuiz()}
+function finishQuiz(){const elapsed=Math.round((Date.now()-current.started)/1000);db.history[today()]={correct:current.correct,total:10,elapsed,questionIds:current.questions.map(q=>q.id),answers:current.answers,completedAt:new Date().toISOString()};save();document.getElementById("questionArea").classList.add("hidden");document.getElementById("resultArea").classList.remove("hidden");document.getElementById("resultScore").textContent=`${current.correct} / 10`;document.getElementById("resultAccuracy").textContent=`正答率 ${current.correct*10}% ・ 回答時間 ${elapsed}秒`;document.getElementById("resultMessage").textContent=current.correct===10?"満点！すばらしい！":current.correct>=7?"好成績！明日も挑戦しよう。":"今日の挑戦おつかれさま！明日も知識を増やそう。";document.getElementById("progressBar").style.width="100%";document.getElementById("resultDaily").onclick=()=>setTab("daily");document.getElementById("resultHome").onclick=()=>{setTab("home");renderHome()};renderHome()}
+function tableHTML(rows,kind){if(!rows.length)return '<div class="empty">まだランキングデータがありません。<br>クイズを解いて最初の記録を作ろう！</div>';return `<table class="table"><thead><tr><th>順位</th><th>プレイヤー</th><th>${kind==="daily"?"正解数":"累計正解"}</th><th>${kind==="daily"?"正答率":"連続"}</th></tr></thead><tbody>${rows.map((r,i)=>`<tr class="${r.name===db.nickname?"me":""}"><td class="rank">${i+1}</td><td>${esc(r.name)}${r.name===db.nickname?"（あなた）":""}</td><td>${kind==="daily"?r.correct+"/10":r.correct}</td><td>${kind==="daily"?r.accuracy+"%":r.streak+"日"}</td></tr>`).join("")}</tbody></table>`}
+function renderBoards(){const entries=[{name:db.nickname,history:db.history,streak:calcStreak()}];const h=getDaily();document.getElementById("dailyBoard").innerHTML=tableHTML(h?[{name:db.nickname,correct:h.correct,accuracy:h.correct*10,elapsed:h.elapsed}].sort((a,b)=>b.correct-a.correct||a.elapsed-b.elapsed):[],"daily");const t=entries.map(e=>({name:e.name,correct:Object.values(e.history).reduce((s,x)=>s+x.correct,0),streak:e.streak})).sort((a,b)=>b.correct-a.correct);document.getElementById("totalBoard").innerHTML=tableHTML(t.filter(x=>x.correct>0),"total")}
+function renderProfile(){document.getElementById("daysPlayed").textContent=Object.keys(db.history).length;document.getElementById("profileCorrect").textContent=getTotal();const total=getTotalAnswered();document.getElementById("overallAccuracy").textContent=total?Math.round(getTotal()/total*100)+"%":"—";const rows=Object.entries(db.history).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,10);document.getElementById("history").innerHTML=rows.length?`<table class="table"><thead><tr><th>日付</th><th>正解</th><th>正答率</th></tr></thead><tbody>${rows.map(([d,h])=>`<tr><td>${d}</td><td>${h.correct}/10</td><td>${h.correct*10}%</td></tr>`).join("")}</tbody></table>`:'<div class="empty">まだ記録がありません。</div>'}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+document.getElementById("changeNick").onclick=()=>{const n=prompt("新しいニックネーム（2〜16文字）",db.nickname);if(n&&n.trim().length>=2&&n.trim().length<=16){db.nickname=n.trim();save();ensure()}};
+document.getElementById("resetData").onclick=()=>{if(confirm("この端末に保存された全記録を消去します。よろしいですか？")){localStorage.removeItem(KEY);db=load();ensure();setTab("home")}};
+ensure();
+</script>
+</body></html>
