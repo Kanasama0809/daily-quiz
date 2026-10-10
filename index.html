@@ -62,7 +62,18 @@ button,input{font:inherit}button{cursor:pointer;border:0}button:disabled{opacity
 let BANK = [];
 const KEY="dailyQuizPrototypeV2",OLD_KEY="dailyQuizPrototypeV1",DAILY_COUNT=20;
 const GENRES=["自然科学","社会・経済","歴史・地理","言語・国語","生活・技術","エンタメ・文化","スポーツ"];
-function genreOf(q){const c=q.cat||"";if(["科学","自然","生物","宇宙","数学"].includes(c))return "自然科学";if(c==="社会")return "社会・経済";if(["歴史","地理"].includes(c))return "歴史・地理";if(["言葉","文学"].includes(c))return "言語・国語";if(["生活","食"].includes(c))return "生活・技術";if(["文化","音楽"].includes(c))return "エンタメ・文化";if(c==="スポーツ")return "スポーツ";return "生活・技術";}
+function genreOf(q){
+  const c=q.cat||"", text=[q.theme||"",q.q||""].join(" ");
+  if(["科学","自然","生物","宇宙","数学"].includes(c))return "自然科学";
+  if(["社会","社会・経済"].includes(c))return "社会・経済";
+  if(["歴史","地理","歴史・地理"].includes(c))return "歴史・地理";
+  if(["言葉","文学","語学","言語・国語"].includes(c))return "言語・国語";
+  if(["生活","食"].includes(c))return "生活・技術";
+  if(["文化","音楽","エンタメ","エンタメ・文化"].includes(c))return "エンタメ・文化";
+  if(c==="文化芸術")return /ウルフカット|髪型|ヘアスタイル/.test(text)?"生活・技術":"エンタメ・文化";
+  if(c==="スポーツ")return "スポーツ";
+  return "エンタメ・文化";
+}
 const BANK_BY_ID=()=>Object.fromEntries(BANK.map(q=>[q.id,q]));
 const dateKey=()=>{const d=new Date();return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'}).format(d)};
 const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
