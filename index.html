@@ -15,7 +15,7 @@ button,input{font:inherit}button{cursor:pointer;border:0}button:disabled{opacity
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.card{background:linear-gradient(150deg,var(--panel),#17192d);border:1px solid var(--line);border-radius:20px;padding:18px;min-width:0}.stat-label{color:var(--muted);font-size:12px}.stat-value{font-size:30px;font-weight:900;margin-top:7px}.stat-sub{color:var(--muted);font-size:12px;margin-top:4px}.section-title{font-size:20px;margin:0 0 14px}.home-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.primary{background:var(--accent);color:#17152b;padding:13px 18px;border-radius:13px;font-weight:850}.secondary{background:var(--panel2);color:var(--text);padding:12px 16px;border:1px solid var(--line);border-radius:13px;font-weight:700}.tiny{font-size:12px;color:var(--muted);line-height:1.7}.panel{margin-top:16px}.hidden{display:none!important}
 .progress-row{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;margin-bottom:10px}.progress{height:7px;background:#343650;border-radius:99px;overflow:hidden}.progress div{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;transition:width .2s}
 .q-meta{display:flex;gap:8px;align-items:center;color:var(--accent2);font-size:12px;font-weight:800}.question{font-size:clamp(21px,4vw,28px);line-height:1.55;margin:18px 0 22px}.answers{display:grid;gap:10px}.answer{width:100%;text-align:left;background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:15px;border-radius:14px;display:flex;gap:12px;align-items:center}.answer .letter{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:9px;background:#343653;color:var(--accent);font-weight:900}.answer.selected{border-color:var(--accent);background:#333052}.answer.correct{border-color:var(--accent2);background:#18382f}.answer.wrong{border-color:var(--danger);background:#432631}.feedback{padding:13px;border-radius:12px;background:var(--panel2);margin-top:14px;line-height:1.7;font-size:14px}.quiz-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px}.table{width:100%;border-collapse:collapse}.table th,.table td{text-align:left;padding:13px 8px;border-bottom:1px solid var(--line);font-size:14px}.table th{font-size:12px;color:var(--muted);font-weight:700}.table tr.me td{color:var(--accent2);font-weight:800}.genre-list{display:grid;gap:12px;margin-top:14px}.genre-item{display:grid;grid-template-columns: minmax(92px,1fr) 2fr 52px;gap:10px;align-items:center;font-size:13px}.genre-track{height:9px;border-radius:99px;background:#343650;overflow:hidden}.genre-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}.genre-rate{text-align:right;font-weight:800}.radar-wrap{max-width:420px;margin:12px auto 0}.radar-wrap canvas{display:block;width:100%;height:auto}.rank{width:36px;color:var(--muted)}.empty{padding:30px 14px;text-align:center;color:var(--muted);line-height:1.8}.field{display:grid;gap:7px;margin:16px 0}.field label{font-size:13px;color:var(--muted)}input{width:100%;padding:13px 14px;border-radius:12px;background:var(--bg);border:1px solid var(--line);color:var(--text)}.toast{margin-top:12px;color:var(--accent2);font-size:13px}.foot{margin-top:28px;color:#777b9f;font-size:11px;line-height:1.8}
-@media(max-width:650px){.grid{grid-template-columns:1fr}.hero{padding-top:12px}.card{padding:16px}.top{margin-bottom:14px}.stat-value{font-size:26px}.table th,.table td{padding:11px 5px;font-size:12px}}
+@media(max-width:650px){html,body{max-width:100%;overflow-x:hidden}.wrap{width:100%;min-width:0;padding-left:12px;padding-right:12px}.grid{grid-template-columns:1fr}.hero{padding-top:12px}.card{padding:16px}.top{margin-bottom:14px}.stat-value{font-size:26px}.table th,.table td{padding:11px 5px;font-size:12px}}
 </style>
 </head>
 <body>
@@ -133,9 +133,14 @@ function drawRadar(canvas,stats,forShare=false){
   ctx.fillStyle='#f5f6ff';ctx.textBaseline='middle';ctx.font=`${forShare?22:16}px sans-serif`;
   GENRES.forEach((g,i)=>{
     const a=-Math.PI/2+i*2*Math.PI/GENRES.length,rr=r+(forShare?39:29),x=cx+rr*Math.cos(a),y=cy+rr*Math.sin(a),label=labels[g]||g;
-    // Align outward-facing labels and clamp them to the canvas so no text is clipped.
+    // Align labels outward, then clamp using the actual rendered text width.
     ctx.textAlign=Math.cos(a)>.25?'left':Math.cos(a)<-.25?'right':'center';
-    const pad=forShare?78:66;const tx=Math.max(pad,Math.min(w-pad,x));
+    const pad=forShare?36:12;
+    const tw=ctx.measureText(label).width;
+    let tx=x;
+    if(ctx.textAlign==='right') tx=Math.max(tw+pad,Math.min(w-pad,tx));
+    else if(ctx.textAlign==='left') tx=Math.max(pad,Math.min(w-tw-pad,tx));
+    else tx=Math.max(tw/2+pad,Math.min(w-tw/2-pad,tx));
     ctx.fillText(label,tx,y);
   });
 }
