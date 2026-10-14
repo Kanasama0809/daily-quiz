@@ -2,63 +2,442 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#17182b">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d22">
+<meta name="color-scheme" content="dark">
 <title>DAILY QUIZ — デイリークイズ</title>
 <style>
-:root{--bg:#10111f;--panel:#1b1d33;--panel2:#242741;--text:#f5f6ff;--muted:#a8abc8;--accent:#a99bff;--accent2:#79e3c0;--danger:#ff8c9b;--line:#343754}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0,#29254f 0,transparent 35%),var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;min-height:100vh}
-button,input{font:inherit}button{cursor:pointer;border:0}button:disabled{opacity:.45;cursor:not-allowed}
-.wrap{max-width:980px;margin:auto;padding:22px 16px 56px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:28px}.brand{font-size:18px;font-weight:900;letter-spacing:.12em}.brand span{color:var(--accent)}.user-pill{font-size:13px;color:var(--muted);background:var(--panel);border:1px solid var(--line);padding:8px 12px;border-radius:99px}
-.hero{padding:26px 0 22px}.eyebrow{color:var(--accent2);font-size:12px;font-weight:800;letter-spacing:.15em}.hero h1{font-size:clamp(30px,6vw,48px);line-height:1.15;margin:10px 0}.hero p{color:var(--muted);margin:0;line-height:1.8}
-.nav{display:flex;gap:8px;overflow:auto;padding:4px 0 18px}.nav button{white-space:nowrap;padding:10px 15px;border-radius:12px;background:transparent;color:var(--muted);border:1px solid var(--line)}.nav button.active{background:var(--accent);color:#18152b;border-color:var(--accent);font-weight:800}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.card{background:linear-gradient(150deg,var(--panel),#17192d);border:1px solid var(--line);border-radius:20px;padding:18px;min-width:0}.stat-label{color:var(--muted);font-size:12px}.stat-value{font-size:30px;font-weight:900;margin-top:7px}.stat-sub{color:var(--muted);font-size:12px;margin-top:4px}.section-title{font-size:20px;margin:0 0 14px}.home-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.primary{background:var(--accent);color:#17152b;padding:13px 18px;border-radius:13px;font-weight:850}.secondary{background:var(--panel2);color:var(--text);padding:12px 16px;border:1px solid var(--line);border-radius:13px;font-weight:700}.tiny{font-size:12px;color:var(--muted);line-height:1.7}.panel{margin-top:16px}.hidden{display:none!important}
-.progress-row{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;margin-bottom:10px}.progress{height:7px;background:#343650;border-radius:99px;overflow:hidden}.progress div{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;transition:width .2s}
-.q-meta{display:flex;gap:8px;align-items:center;color:var(--accent2);font-size:12px;font-weight:800}.question{font-size:clamp(21px,4vw,28px);line-height:1.55;margin:18px 0 22px}.answers{display:grid;gap:10px}.answer{width:100%;text-align:left;background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:15px;border-radius:14px;display:flex;gap:12px;align-items:center}.answer .letter{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:9px;background:#343653;color:var(--accent);font-weight:900}.answer.selected{border-color:var(--accent);background:#333052}.answer.correct{border-color:var(--accent2);background:#18382f}.answer.wrong{border-color:var(--danger);background:#432631}.feedback{padding:13px;border-radius:12px;background:var(--panel2);margin-top:14px;line-height:1.7;font-size:14px}.quiz-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px}.table{width:100%;border-collapse:collapse}.table th,.table td{text-align:left;padding:13px 8px;border-bottom:1px solid var(--line);font-size:14px}.table th{font-size:12px;color:var(--muted);font-weight:700}.table tr.me td{color:var(--accent2);font-weight:800}.genre-list{display:grid;gap:12px;margin-top:14px}.genre-item{display:grid;grid-template-columns: minmax(92px,1fr) 2fr 52px;gap:10px;align-items:center;font-size:13px}.genre-track{height:9px;border-radius:99px;background:#343650;overflow:hidden}.genre-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}.genre-rate{text-align:right;font-weight:800}.radar-wrap{max-width:420px;margin:12px auto 0}.radar-wrap canvas{display:block;width:100%;height:auto}.rank{width:36px;color:var(--muted)}.empty{padding:30px 14px;text-align:center;color:var(--muted);line-height:1.8}.field{display:grid;gap:7px;margin:16px 0}.field label{font-size:13px;color:var(--muted)}input{width:100%;padding:13px 14px;border-radius:12px;background:var(--bg);border:1px solid var(--line);color:var(--text)}.toast{margin-top:12px;color:var(--accent2);font-size:13px}.foot{margin-top:28px;color:#777b9f;font-size:11px;line-height:1.8}
-@media(max-width:650px){html,body{max-width:100%;overflow-x:hidden}.wrap{width:100%;min-width:0;padding-left:12px;padding-right:12px}.grid{grid-template-columns:1fr}.hero{padding-top:12px}.card{padding:16px}.top{margin-bottom:14px}.stat-value{font-size:26px}.table th,.table td{padding:11px 5px;font-size:12px}}
+:root{
+  --bg:#0b0d22;--bg-2:#13153a;--surface:rgba(30,33,74,.62);--surface-2:rgba(255,255,255,.045);
+  --raised:#24285a;--line:rgba(150,160,255,.13);--line-2:rgba(150,160,255,.26);
+  --text:#eef0ff;--muted:#a2a8d2;--faint:#727aa6;
+  --mint:#5ef2c4;--cyan:#56d4f2;--violet:#9d90ff;--rose:#ff8fa3;
+  --mint-bg:rgba(94,242,196,.11);--rose-bg:rgba(255,143,163,.11);--violet-bg:rgba(157,144,255,.14);
+  --font:system-ui,-apple-system,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;
+  --nav-h:64px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html,body{max-width:100%;overflow-x:hidden}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.6;min-height:100%;-webkit-tap-highlight-color:transparent}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(70% 45% at 0% 0%,rgba(118,92,230,.30),transparent 70%),
+    radial-gradient(60% 40% at 100% 100%,rgba(56,190,220,.14),transparent 70%),
+    linear-gradient(180deg,#0e1030 0%,var(--bg) 60%)}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;padding:0;touch-action:manipulation}
+button:disabled{cursor:not-allowed}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:8px}
+.hidden{display:none!important}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+
+/* shell */
+.shell{width:100%;max-width:720px;margin:0 auto;
+  padding:calc(env(safe-area-inset-top,0px) + 14px) max(16px,env(safe-area-inset-right,0px)) calc(var(--nav-h) + env(safe-area-inset-bottom,0px) + 32px) max(16px,env(safe-area-inset-left,0px))}
+.appbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;min-width:0}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand svg{flex:0 0 auto}
+.brand-name{font-weight:900;letter-spacing:.14em;font-size:16px;white-space:nowrap}
+.brand-name b{color:var(--mint);font-weight:900}
+.bank{font-size:11px;color:var(--faint);text-align:right;line-height:1.4;min-width:0}
+.bank.err{color:var(--rose)}
+
+/* nav: bottom on phones, inline on wide screens */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;
+  padding:6px max(8px,env(safe-area-inset-left,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-right,0px));
+  background:rgba(11,13,34,.88);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-top:1px solid var(--line)}
+.nav button{flex:1 1 0;min-width:0;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--faint);font-size:11px;font-weight:700;border-radius:12px}
+.nav button svg{width:22px;height:22px}
+.nav button.active{color:var(--mint)}
+.nav button.active svg{filter:drop-shadow(0 0 6px rgba(94,242,196,.45))}
+
+/* surfaces */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:18px;min-width:0}
+.stack{display:grid;gap:14px}
+.h2{font-size:19px;font-weight:800;margin:0;letter-spacing:.02em}
+.h3{font-size:15px;font-weight:800;margin:0 0 10px}
+.sub{color:var(--muted);font-size:13px;margin:4px 0 0}
+.tiny{font-size:12px;color:var(--faint);line-height:1.7;margin:0}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0}
+
+/* buttons */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;padding:12px 18px;border-radius:15px;font-weight:800;font-size:16px;text-align:center;transition:transform .12s,filter .12s}
+.btn:active:not(:disabled){transform:scale(.98)}
+.btn-primary{background:linear-gradient(135deg,var(--mint),var(--cyan));color:#062228;box-shadow:0 8px 24px -10px rgba(94,242,196,.6)}
+.btn-primary:disabled{background:var(--raised);color:var(--faint);box-shadow:none}
+.btn-ghost{background:var(--surface-2);border:1px solid var(--line-2);color:var(--text);font-size:15px;min-height:48px}
+.btn-ghost:disabled{color:var(--faint)}
+.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn-danger{color:var(--rose);border-color:rgba(255,143,163,.35)}
+
+.home-grid{display:grid;gap:14px}
+/* home: today card */
+.today{position:relative;overflow:hidden;padding:20px 18px 18px;border-radius:24px;
+  background:linear-gradient(160deg,rgba(64,56,150,.55),rgba(24,27,66,.75) 55%),var(--bg-2);border:1px solid var(--line-2)}
+.today-date{font-size:13px;color:var(--muted);font-weight:700}
+.today-title{font-size:clamp(24px,6.6vw,32px);font-weight:900;line-height:1.25;margin:4px 0 0;letter-spacing:.01em}
+.today-score{display:flex;align-items:baseline;gap:10px;margin:14px 0 12px;flex-wrap:wrap}
+.today-score .big{font-size:40px;font-weight:900;line-height:1}
+.today-score .big small{font-size:18px;color:var(--muted);font-weight:700;margin-left:2px}
+.today-score .pct{font-size:14px;color:var(--mint);font-weight:800}
+.today-desc{font-size:13px;color:var(--muted);margin:12px 0 16px}
+
+/* 20-segment strip (signature element) */
+.segs{display:grid;grid-template-columns:repeat(20,minmax(0,1fr));gap:3px}
+.segs i{display:block;height:10px;border-radius:3px;background:rgba(255,255,255,.09);transition:background .25s}
+.segs.lg{gap:4px}.segs.lg i{height:24px;border-radius:5px}
+.segs i.ok{background:var(--mint)}
+.segs i.ng{background:var(--rose)}
+.segs i.done{background:var(--violet)}
+.segs i.now{background:rgba(94,242,196,.22);box-shadow:inset 0 0 0 1.5px var(--mint)}
+.segs.h100{grid-template-columns:repeat(50,minmax(0,1fr));gap:2px}
+.segs.h100 i{height:7px;border-radius:2px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--faint);margin-top:8px}
+.legend span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;vertical-align:0;background:var(--c)}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 14px 12px;min-width:0}
+.stat-label{font-size:12px;color:var(--muted);font-weight:700}
+.stat-value{font-size:26px;font-weight:900;line-height:1.2;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat-value small{font-size:13px;color:var(--muted);font-weight:700;margin-left:2px}
+.stat-sub{font-size:11px;color:var(--faint);margin-top:2px}
+.stat.accent .stat-value{color:var(--mint)}
+
+/* genre bars */
+.genres{display:grid;gap:12px}
+.g{display:grid;grid-template-columns:minmax(0,7.6em) minmax(0,1fr) 3.2em;gap:10px;align-items:center;font-size:13px}
+.g-name{display:flex;align-items:center;gap:6px;min-width:0;white-space:nowrap}
+.g-name span{overflow:hidden;text-overflow:ellipsis}
+.g-track{height:8px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden}
+.g-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--violet),var(--mint));transition:width .4s}
+.g-rate{text-align:right;font-weight:800}
+.g-rate.none{color:var(--faint);font-weight:600}
+.g-count{grid-column:2/-1;font-size:11px;color:var(--faint);margin-top:-8px}
+.tag{display:inline-block;margin-left:6px;vertical-align:1px;font-size:10px;font-weight:800;padding:1px 6px;border-radius:6px;line-height:1.6}
+.tag.best{background:var(--mint-bg);color:var(--mint)}
+.tag.weak{background:var(--rose-bg);color:var(--rose)}
+
+/* quiz */
+.q-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;min-width:0}
+.chip{display:inline-flex;align-items:center;font-size:12px;font-weight:800;color:var(--cyan);background:rgba(86,212,242,.1);border:1px solid rgba(86,212,242,.25);padding:3px 10px;border-radius:99px;white-space:nowrap}
+.q-count{font-size:14px;font-weight:800;white-space:nowrap}
+.q-count small{color:var(--faint);font-weight:700}
+.q-sub{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--faint);margin-top:8px}
+.question{font-size:clamp(20px,5.6vw,27px);font-weight:800;line-height:1.6;margin:22px 2px 22px;overflow-wrap:anywhere;word-break:break-word;min-height:2.2em}
+.answers{display:grid;gap:10px}
+.answer{width:100%;min-height:58px;text-align:left;display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:15px;
+  background:var(--surface-2);border:1.5px solid var(--line-2);color:var(--text);font-size:16px;font-weight:600;line-height:1.5;transition:border-color .15s,background .15s,opacity .2s,transform .1s}
+.answer:active:not(:disabled){transform:scale(.985)}
+.answer:disabled{cursor:default}
+.answer .letter{display:grid;place-items:center;flex:0 0 34px;height:34px;border-radius:10px;background:rgba(157,144,255,.16);color:var(--violet);font-weight:900;font-size:15px}
+.answer .txt{flex:1 1 auto;min-width:0;overflow-wrap:anywhere;word-break:break-word}
+.answer .mk{flex:0 0 auto;font-weight:900;font-size:13px}
+.answer.selected{border-color:var(--violet);background:var(--violet-bg)}
+.answer.correct{border-color:var(--mint);background:var(--mint-bg);animation:pop .3s ease-out}
+.answer.correct .letter{background:var(--mint);color:#062228}
+.answer.correct .mk{color:var(--mint)}
+.answer.wrong{border-color:var(--rose);background:var(--rose-bg);animation:nudge .3s ease-out}
+.answer.wrong .letter{background:var(--rose);color:#2a0710}
+.answer.wrong .mk{color:var(--rose)}
+.answer.dim{opacity:.42}
+@keyframes pop{0%{transform:scale(1)}45%{transform:scale(1.025)}100%{transform:scale(1)}}
+@keyframes nudge{0%,100%{transform:translateX(0)}30%{transform:translateX(-4px)}65%{transform:translateX(3px)}}
+.feedback{margin-top:14px;padding:13px 15px;border-radius:14px;font-size:14px;line-height:1.7;border:1px solid var(--line);background:var(--surface-2);overflow-wrap:anywhere}
+.feedback.ok{border-color:rgba(94,242,196,.4);background:var(--mint-bg)}
+.feedback.ng{border-color:rgba(255,143,163,.4);background:var(--rose-bg)}
+.feedback strong{font-size:15px}
+.feedback.ok strong{color:var(--mint)}
+.feedback.ng strong{color:var(--rose)}
+.feedback .exp{margin:8px 0 0;color:var(--text)}
+.next-wrap{margin-top:14px}
+.q-note{text-align:center;margin-top:14px}
+
+/* result */
+.result-score{font-size:56px;font-weight:900;line-height:1;margin:10px 0 6px}
+.result-score small{font-size:22px;color:var(--muted);font-weight:700;margin-left:4px}
+.msg{font-size:14px;color:var(--text);margin:14px 0 0;padding:12px 14px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line)}
+.toast{font-size:13px;color:var(--mint);margin:10px 0 0;min-height:1em}
+
+/* 100 */
+.live{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:14px}
+.live div{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:8px 6px;text-align:center;min-width:0}
+.live b{display:block;font-size:18px;font-weight:900;line-height:1.3;white-space:nowrap}
+.live span{font-size:10px;color:var(--faint);font-weight:700;white-space:nowrap}
+.live .t b{color:var(--cyan)}
+.bar{height:6px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+.bar div{height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--mint));transition:width .25s}
+
+/* records */
+.seg-ctl{display:grid;grid-template-columns:1fr 1fr;padding:4px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line);margin-bottom:14px}
+.seg-ctl button{min-height:42px;border-radius:10px;font-size:14px;font-weight:800;color:var(--muted)}
+.seg-ctl button.active{background:var(--raised);color:var(--text);box-shadow:0 1px 0 rgba(255,255,255,.06) inset}
+.seg-ctl.three{grid-template-columns:repeat(3,1fr)}
+.seg-ctl.three button{font-size:13px;min-height:38px}
+.radar-wrap{width:100%;min-width:0;overflow:hidden}
+.radar-wrap canvas{display:block;width:100%;max-width:100%;margin:0 auto}
+.radar-note{text-align:center;margin-top:6px}
+
+.list{display:grid;gap:10px}
+.res{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:12px 14px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line)}
+.res .mode{font-size:11px;font-weight:800;padding:2px 8px;border-radius:7px;background:var(--violet-bg);color:var(--violet);white-space:nowrap}
+.res .mode.h{background:rgba(86,212,242,.12);color:var(--cyan)}
+.res .d{font-size:13px;color:var(--muted);min-width:0}
+.res .s{font-weight:900;font-size:16px;text-align:right;white-space:nowrap}
+.res .s small{font-size:12px;color:var(--muted);font-weight:700;margin-left:6px}
+.res .x{grid-column:2/-1;font-size:11px;color:var(--faint)}
+
+.hq{padding:14px;border-radius:15px;background:var(--surface-2);border:1px solid var(--line);border-left:3px solid var(--line-2);min-width:0}
+.hq.ok{border-left-color:var(--mint)}
+.hq.ng{border-left-color:var(--rose)}
+.hq-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:11px;color:var(--faint)}
+.hq-meta .res-mark{font-weight:900;font-size:12px}
+.hq.ok .res-mark{color:var(--mint)}
+.hq.ng .res-mark{color:var(--rose)}
+.hq-meta .pill{padding:1px 7px;border-radius:6px;background:rgba(255,255,255,.06);color:var(--muted)}
+.hq-q{font-size:15px;font-weight:700;margin:8px 0;overflow-wrap:anywhere}
+.hq dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;margin:0;font-size:13px}
+.hq dt{color:var(--faint)}
+.hq dd{margin:0;overflow-wrap:anywhere}
+.hq.ng dd.mine{color:var(--rose)}
+.hq dd.right{color:var(--mint);font-weight:700}
+.hq .exp{margin:8px 0 0;font-size:13px;color:var(--muted);padding-top:8px;border-top:1px dashed var(--line)}
+.empty{padding:26px 12px;text-align:center;color:var(--muted);font-size:14px;line-height:1.8}
+.tiny.warn{color:var(--rose)}
+.foot{margin:22px 4px 0;font-size:11px;color:var(--faint);line-height:1.8}
+
+@media (min-width:760px){
+  :root{--nav-h:0px}
+  .shell{max-width:980px;padding-left:24px;padding-right:24px;padding-bottom:48px}
+  .appbar{margin-bottom:26px}
+  .nav{position:static;padding:4px;gap:4px;background:var(--surface-2);border:1px solid var(--line);border-radius:14px;-webkit-backdrop-filter:none;backdrop-filter:none;flex:0 0 auto}
+  .nav button{flex-direction:row;min-height:38px;padding:0 14px;font-size:13px;gap:6px;color:var(--muted)}
+  .nav button svg{width:17px;height:17px}
+  .nav button.active{background:var(--raised);color:var(--mint)}
+  .bank{display:none}
+  .home-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;align-items:start}
+  .stats.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .narrow{max-width:680px;margin:0 auto}
+  .rec-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+  .segs.lg i{height:28px}
+}
+@media (max-width:360px){
+  .shell{padding-left:12px;padding-right:12px}
+  .card{padding:15px}
+  .stat-value{font-size:22px}
+  .today-score .big{font-size:34px}
+  .segs.lg{gap:3px}
+  .live b{font-size:15px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<div class="wrap">
-<header class="top"><div class="brand">DAILY <span>QUIZ</span></div><div class="user-pill" id="userPill">端末内保存</div></header>
-<section id="app">
-  <div class="hero"><div class="eyebrow">YOUR DAILY CHALLENGE</div><h1>今日の20問に、<br>挑戦しよう。</h1><p>総合クイズで知識を試そう。一度解いた問題は、この端末では再出題しないよ。</p><p id="bankStatus" class="tiny" role="status">問題データを読み込み中…</p></div>
-  <nav class="nav">
-    <button class="active" data-tab="home">ホーム</button><button data-tab="quiz">デイリー</button><button data-tab="hundred">100問斬り</button><button data-tab="profile">マイ記録</button>
-  </nav>
+<div class="shell">
+  <header class="appbar">
+    <div class="brand" aria-label="DAILY QUIZ">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="11" fill="none" stroke="#5ef2c4" stroke-width="4" stroke-dasharray="2.6 0.856" transform="rotate(-90 15 15)"/><circle cx="15" cy="15" r="3.4" fill="#9d90ff"/></svg>
+      <span class="brand-name">DAILY <b>QUIZ</b></span>
+    </div>
+    <nav class="nav" id="nav" aria-label="メインメニュー">
+      <button class="active" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>ホーム</button>
+      <button data-tab="quiz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16.5" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4M9 15l2 2 4-4"/></svg>デイリー</button>
+      <button data-tab="hundred"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.5 2M10 2.5h4M19 5.5l1.5 1.5"/></svg>100問斬り</button>
+      <button data-tab="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>記録</button>
+    </nav>
+    <p id="bankStatus" class="bank" role="status">問題データを読み込み中…</p>
+  </header>
+
   <main>
+    <!-- HOME -->
     <section id="tab-home">
-      <div class="grid">
-        <div class="card"><div class="stat-label">今日の結果</div><div class="stat-value" id="todayScore">—</div><div class="stat-sub" id="todaySub">今日の挑戦はまだ</div></div>
-        <div class="card"><div class="stat-label">累計正解数</div><div class="stat-value" id="totalCorrect">0</div><div class="stat-sub">これまでの正解</div></div>
-        <div class="card"><div class="stat-label">累計正答率</div><div class="stat-value" id="homeAccuracy">—</div><div class="stat-sub">これまでの全回答</div></div>
+      <div class="home-grid">
+        <div class="stack">
+          <article class="today" aria-labelledby="homeQuizTitle">
+            <div class="today-date" id="homeDate"></div>
+            <h1 class="today-title" id="homeQuizTitle">今日の20問</h1>
+            <div class="today-score">
+              <span class="big num" id="todayScore">—</span>
+              <span class="pct" id="todaySub">まだ挑戦していません</span>
+            </div>
+            <div class="segs lg" id="homeSegs" aria-hidden="true"></div>
+            <div class="legend" aria-hidden="true"><span style="--c:var(--mint)">正解</span><span style="--c:var(--rose)">不正解</span><span style="--c:rgba(255,255,255,.18)">未回答</span></div>
+            <p class="today-desc" id="homeQuizDesc">未出題の問題から20問。</p>
+            <button class="btn btn-primary" id="startQuiz">今日のクイズを始める</button>
+          </article>
+          <div class="btn-row">
+            <button class="btn btn-ghost" id="startHundredHome">100問斬りに挑戦</button>
+            <button class="btn btn-ghost" id="goRecords">成績と履歴を見る</button>
+          </div>
+        </div>
+        <div class="stack">
+          <div class="stats">
+            <div class="stat accent"><div class="stat-label">累計正答率</div><div class="stat-value num" id="homeAccuracy">—</div><div class="stat-sub"><span id="totalCorrect" class="num">0</span>問正解</div></div>
+            <div class="stat"><div class="stat-label">累計解答数</div><div class="stat-value num" id="homeAnswered">0<small>問</small></div><div class="stat-sub">デイリー＋100問斬り</div></div>
+            <div class="stat"><div class="stat-label">連続挑戦</div><div class="stat-value num" id="homeStreak">0<small>日</small></div><div class="stat-sub" id="homeStreakSub">デイリー完了日で計算</div></div>
+            <div class="stat"><div class="stat-label">挑戦した日数</div><div class="stat-value num" id="homeDays">0<small>日</small></div><div class="stat-sub" id="homeUnseen">未出題 —</div></div>
+          </div>
+          <section class="card" aria-labelledby="homeGenreTitle">
+            <div class="row" style="margin-bottom:12px"><h2 class="h3" id="homeGenreTitle" style="margin:0">ジャンル別の正答率</h2><span class="tiny">総合</span></div>
+            <div class="genres" id="homeGenres"></div>
+          </section>
+        </div>
       </div>
-      <div class="card panel"><div class="eyebrow">TODAY'S QUIZ</div><h2 class="section-title" id="homeQuizTitle">20問チャレンジ</h2><p class="tiny" id="homeQuizDesc">全20問・選択式。成績と出題履歴はこの端末に保存されます。</p><div class="home-actions"><button class="primary" id="startQuiz">今日のクイズを始める</button><button class="secondary" id="startHundredHome">100問斬りに挑戦</button></div></div>
-      <div class="foot">端末内保存版：記録はこのブラウザに保存されます。ブラウザのデータ削除や機種変更で記録が消える場合があります。</div>
+      <p class="foot">記録はこのブラウザに保存されます。ブラウザのデータ削除や機種変更で記録が消える場合があります。デイリーや100問斬りで一度出た問題は、この端末では再出題しません。</p>
     </section>
+
+    <!-- DAILY -->
     <section id="tab-quiz" class="hidden">
-      <div class="card">
-        <div class="progress-row"><span id="questionCount">第1問 / 20</span><span id="answeredCount">回答 0 / 20</span></div><div class="progress"><div id="progressBar"></div></div>
-        <div id="questionArea"><div class="q-meta"><span id="qGenre">自然科学</span><span>•</span><span id="qDifficulty">ウォームアップ</span></div><div class="question" id="questionText"></div><div class="answers" id="answers"></div><div id="feedback" class="feedback hidden"></div><div class="quiz-footer"><span class="tiny" id="quizNote">選択肢をタップすると即判定</span></div></div>
-        <div id="resultArea" class="hidden"><div class="eyebrow">CHALLENGE COMPLETE</div><h2 class="section-title">今日の結果</h2><div class="stat-value" id="resultScore">0 / 20</div><p id="resultAccuracy"></p><p id="resultTotalAccuracy"></p><p class="tiny" id="resultMessage"></p><div class="home-actions"><button class="primary" id="shareImage">成績画像を保存・シェア</button><button class="secondary" id="resultHome">ホームに戻る</button></div><canvas id="shareCanvas" width="1080" height="1350" class="hidden"></canvas><div id="shareMsg" class="toast"></div></div>
+      <div class="narrow">
+        <div id="quizIdle" class="card hidden">
+          <h2 class="h2">今日の20問</h2>
+          <p class="sub">選択肢をタップするとすぐに正誤がわかります。未出題の問題から出題します。</p>
+          <div class="segs lg" style="margin:18px 0" aria-hidden="true" id="idleSegs"></div>
+          <button class="btn btn-primary" id="idleStart">今日のクイズを始める</button>
+        </div>
+
+        <div id="questionArea" class="card hidden">
+          <div class="q-top"><span class="chip" id="qGenre">自然科学</span><span class="q-count num" id="questionCount">第1問 <small>/ 20</small></span></div>
+          <div class="segs" id="quizSegs" aria-hidden="true"></div>
+          <div class="q-sub"><span id="qDifficulty">デイリー</span><span id="answeredCount" class="num">回答 0 / 20</span></div>
+          <div class="question" id="questionText" aria-live="polite"></div>
+          <div class="answers" id="answers"></div>
+          <div id="feedback" class="feedback hidden" role="status"></div>
+          <div class="next-wrap hidden" id="nextWrap"><button class="btn btn-primary" id="nextBtn">次の問題へ</button></div>
+          <p class="tiny q-note" id="quizNote">選択肢をタップすると即判定</p>
+        </div>
+
+        <div id="resultArea" class="card hidden">
+          <h2 class="h2">今日の結果</h2>
+          <div class="result-score num" id="resultScore">0 / 20</div>
+          <div class="segs lg" id="resultSegs" style="margin:14px 0 4px" aria-hidden="true"></div>
+          <div class="stats" style="margin-top:14px">
+            <div class="stat accent"><div class="stat-label">今日の正答率</div><div class="stat-value num" id="resultAccuracy">—</div></div>
+            <div class="stat"><div class="stat-label">累計正答率</div><div class="stat-value num" id="resultTotalAccuracy">—</div><div class="stat-sub num" id="resultTotalSub"></div></div>
+          </div>
+          <p class="msg" id="resultMessage"></p>
+          <div class="stack" style="margin-top:16px">
+            <button class="btn btn-primary" id="shareImage">成績画像を保存・シェア</button>
+            <div class="btn-row"><button class="btn btn-ghost" id="resultReview">問題を見返す</button><button class="btn btn-ghost" id="resultHome">ホームに戻る</button></div>
+          </div>
+          <canvas id="shareCanvas" width="1080" height="1350" class="hidden"></canvas>
+          <p id="shareMsg" class="toast" role="status"></p>
+        </div>
       </div>
     </section>
-    
+
+    <!-- 100 -->
     <section id="tab-hundred" class="hidden">
-      <div class="card">
-        <div class="eyebrow">100 QUESTIONS CHALLENGE</div><h2 class="section-title">100問斬り</h2>
-        <p class="tiny">全100問を連続で解くタイムアタック。制限時間はなく、回答時間・平均回答時間・正答率を記録します。問題は1回の挑戦中に重複しません。</p>
-        <div class="grid"><div><div class="stat-label">経過時間</div><div class="stat-value" id="hundredTimer">00:00</div></div><div><div class="stat-label">回答数</div><div class="stat-value" id="hundredProgress">0 / 100</div></div><div><div class="stat-label">前回の正答率</div><div class="stat-value" id="hundredLastAccuracy">—</div></div></div>
-        <div class="home-actions"><button class="primary" id="startHundred">100問斬りスタート</button></div>
-        <div id="hundredQuestionArea" class="hidden panel"><div class="progress-row"><span id="hundredQuestionCount">第1問 / 100</span><span id="hundredElapsedSmall">00:00</span></div><div class="progress"><div id="hundredProgressBar"></div></div><div class="q-meta"><span id="hundredGenre">自然科学</span><span>•</span><span>100問斬り</span></div><div class="question" id="hundredQuestionText"></div><div class="answers" id="hundredAnswers"></div><div id="hundredFeedback" class="feedback hidden"></div><div class="quiz-footer"><span class="tiny" id="hundredNote">選択肢をタップすると即判定</span></div></div>
-        <div id="hundredResultArea" class="hidden panel"><div class="eyebrow">100 QUESTIONS COMPLETE</div><h2 class="section-title">100問斬り 結果</h2><div class="grid"><div><div class="stat-label">正解数</div><div class="stat-value" id="hundredResultScore">—</div></div><div><div class="stat-label">正答率</div><div class="stat-value" id="hundredResultAccuracy">—</div></div><div><div class="stat-label">平均回答時間</div><div class="stat-value" id="hundredAverageTime">—</div></div></div><p class="tiny" id="hundredResultElapsed"></p><div class="radar-wrap"><canvas id="hundredResultRadar" width="700" height="650" aria-label="100問斬りジャンル別正答率"></canvas></div><div class="home-actions"><button class="primary" id="shareHundredImage">結果画像を保存・シェア</button><button class="secondary" id="hundredHome">ホームに戻る</button></div><canvas id="hundredShareCanvas" width="1080" height="1350" class="hidden"></canvas><div id="hundredShareMsg" class="toast"></div></div>
+      <div class="narrow">
+        <div id="hundredIntro" class="card">
+          <h2 class="h2">100問斬り</h2>
+          <p class="sub">全100問を連続で解くタイムアタック。制限時間はなく、総タイム・平均回答時間・正答率を記録します。一度出た問題は、デイリーにも次回以降の100問斬りにも出ません。</p>
+          <div class="stats" style="margin:16px 0">
+            <div class="stat"><div class="stat-label">前回の正答率</div><div class="stat-value num" id="hundredLastAccuracy">—</div><div class="stat-sub num" id="hundredLastSub">記録なし</div></div>
+            <div class="stat"><div class="stat-label">挑戦回数</div><div class="stat-value num" id="hundredCountIntro">0<small>回</small></div><div class="stat-sub num" id="hundredBestSub">自己ベスト —</div></div>
+          </div>
+          <p class="tiny" id="hundredUnseen" style="margin:-4px 0 12px"></p>
+          <button class="btn btn-primary" id="startHundred">100問斬りスタート</button>
+        </div>
+
+        <div id="hundredQuestionArea" class="card hidden">
+          <div class="live">
+            <div class="t"><b class="num" id="hundredTimer">00:00</b><span>経過時間</span></div>
+            <div><b class="num" id="hundredProgress">0</b><span>回答 / 100</span></div>
+            <div><b class="num" id="hundredScore">0</b><span>正解</span></div>
+            <div><b class="num" id="hundredRemain">100</b><span>残り</span></div>
+          </div>
+          <div class="segs h100" id="hundredSegs" aria-hidden="true"></div>
+          <div class="bar hidden"><div id="hundredProgressBar"></div></div>
+          <div class="q-top" style="margin-top:14px;margin-bottom:0"><span class="chip" id="hundredGenre">自然科学</span><span class="q-count num" id="hundredQuestionCount">第1問 <small>/ 100</small></span></div>
+          <span id="hundredElapsedSmall" class="hidden">00:00</span>
+          <div class="question" id="hundredQuestionText" aria-live="polite"></div>
+          <div class="answers" id="hundredAnswers"></div>
+          <div id="hundredFeedback" class="feedback hidden" role="status"></div>
+          <p class="tiny q-note" id="hundredNote">選択肢をタップすると即判定。自動で次の問題へ進みます</p>
+        </div>
+
+        <div id="hundredResultArea" class="card hidden">
+          <h2 class="h2">100問斬り 結果</h2>
+          <div class="result-score num" id="hundredResultScore">— / 100</div>
+          <div class="stats" style="margin-top:14px">
+            <div class="stat accent"><div class="stat-label">正答率</div><div class="stat-value num" id="hundredResultAccuracy">—</div></div>
+            <div class="stat"><div class="stat-label">平均回答時間</div><div class="stat-value num" id="hundredAverageTime">—</div></div>
+          </div>
+          <p class="tiny num" id="hundredResultElapsed" style="margin-top:12px"></p>
+          <h3 class="h3" style="margin-top:18px">ジャンル別正答率（今回）</h3>
+          <div class="radar-wrap"><canvas id="hundredResultRadar" aria-label="100問斬りジャンル別正答率"></canvas></div>
+          <div class="stack" style="margin-top:16px">
+            <button class="btn btn-primary" id="shareHundredImage">結果画像を保存・シェア</button>
+            <div class="btn-row"><button class="btn btn-ghost" id="hundredAgain">もう一度挑戦</button><button class="btn btn-ghost" id="hundredHome">ホームに戻る</button></div>
+          </div>
+          <canvas id="hundredShareCanvas" width="1080" height="1350" class="hidden"></canvas>
+          <p id="hundredShareMsg" class="toast" role="status"></p>
+        </div>
       </div>
     </section>
-    <section id="tab-profile" class="hidden"><div class="card"><div class="eyebrow">YOUR RECORD</div><h2 class="section-title">マイ記録</h2><div class="grid"><div><div class="stat-label">挑戦した日数</div><div class="stat-value" id="daysPlayed">0</div></div><div><div class="stat-label">累計正解</div><div class="stat-value" id="profileCorrect">0</div></div><div><div class="stat-label">累計正答率</div><div class="stat-value" id="overallAccuracy">—</div></div><div><div class="stat-label">100問斬り挑戦回数</div><div class="stat-value" id="hundredPlayedCount">0</div></div></div><div class="panel"><h3>ジャンル別正答率</h3><p class="tiny">累計の正解数 ÷ そのジャンルの回答数。回答がないジャンルは「—」で表示します。</p><div id="genreStats" class="genre-list"></div><div class="radar-wrap"><h4>デイリーのジャンル別正答率</h4><canvas id="profileRadar" width="700" height="650" aria-label="デイリーのジャンル別正答率レーダーチャート"></canvas></div><div class="radar-wrap"><h4>100問斬りのジャンル別正答率</h4><canvas id="hundredProfileRadar" width="700" height="650" aria-label="100問斬りのジャンル別正答率レーダーチャート"></canvas></div><div class="radar-wrap"><h4>総合記録（デイリー＋100問斬り）</h4><canvas id="combinedProfileRadar" width="700" height="650" aria-label="総合記録のジャンル別正答率レーダーチャート"></canvas></div></div><div class="panel"><h3>最近の結果</h3><div id="history"></div></div><div class="panel"><h3>最近解いた問題（直近20問）</h3><p class="tiny">正解・不正解と正しい答えを確認できます。</p><div id="recentQuestions"></div></div><div class="home-actions"><button class="secondary" id="resetData">この端末の記録を消去</button></div><p class="tiny">記録を消すと元に戻せません。端末内保存のため、他の端末とは成績を共有しません。</p></div></section>
+
+    <!-- RECORDS -->
+    <section id="tab-profile" class="hidden">
+      <div class="seg-ctl" role="tablist" aria-label="記録の表示切替">
+        <button class="active" data-rec="stats" role="tab">成績</button>
+        <button data-rec="history" role="tab">解答履歴</button>
+      </div>
+
+      <div id="recStats" class="stack">
+        <div class="stats four">
+          <div class="stat"><div class="stat-label">今日のスコア</div><div class="stat-value num" id="profToday">—</div></div>
+          <div class="stat"><div class="stat-label">今日の正答率</div><div class="stat-value num" id="profTodayPct">—</div></div>
+          <div class="stat accent"><div class="stat-label">累計正答率</div><div class="stat-value num" id="overallAccuracy">—</div></div>
+          <div class="stat"><div class="stat-label">累計解答数</div><div class="stat-value num" id="profAnswered">0</div></div>
+          <div class="stat"><div class="stat-label">累計正解</div><div class="stat-value num" id="profileCorrect">0</div></div>
+          <div class="stat"><div class="stat-label">挑戦した日数</div><div class="stat-value num" id="daysPlayed">0</div></div>
+          <div class="stat"><div class="stat-label">連続挑戦</div><div class="stat-value num" id="profStreak">0<small>日</small></div></div>
+          <div class="stat"><div class="stat-label">100問斬り挑戦</div><div class="stat-value num" id="hundredPlayedCount">0</div></div>
+        </div>
+        <div class="rec-grid">
+          <section class="card">
+            <h2 class="h3">ジャンル別レーダー</h2>
+            <div class="seg-ctl three" id="radarSwitch">
+              <button class="active" data-radar="combined">総合</button><button data-radar="daily">デイリー</button><button data-radar="hundred">100問斬り</button>
+            </div>
+            <div class="radar-wrap"><canvas id="profileRadar" aria-label="ジャンル別正答率レーダーチャート"></canvas></div>
+            <p class="tiny radar-note" id="radarNote"></p>
+          </section>
+          <section class="card">
+            <h2 class="h3">ジャンル別正答率（総合）</h2>
+            <p class="tiny" style="margin:-4px 0 12px">正解数 ÷ そのジャンルの回答数。未回答のジャンルは「—」。</p>
+            <div id="genreStats" class="genres"></div>
+          </section>
+        </div>
+      </div>
+
+      <div id="recHistory" class="stack hidden">
+        <section class="card">
+          <h2 class="h3">これまでの結果</h2>
+          <div id="history" class="list"></div>
+          <div id="historyMoreWrap" class="hidden" style="margin-top:10px"><button class="btn btn-ghost" id="historyMore">すべて表示</button></div>
+        </section>
+        <section class="card">
+          <div class="row" style="margin-bottom:10px;flex-wrap:wrap"><h2 class="h3" style="margin:0">解いた問題</h2><span class="tiny" id="qCountLabel"></span></div>
+          <div class="seg-ctl" id="qFilter" style="margin-bottom:12px"><button class="active" data-f="all">すべて</button><button data-f="ng">不正解のみ</button></div>
+          <div id="recentQuestions" class="list"></div>
+          <div id="qMoreWrap" class="hidden" style="margin-top:10px"><button class="btn btn-ghost" id="qMore">さらに20問表示</button></div>
+        </section>
+      </div>
+
+      <div style="margin-top:22px">
+        <button class="btn btn-ghost btn-danger" id="resetData">この端末の記録を消去</button>
+        <p class="tiny" style="margin-top:8px">記録を消すと元に戻せません。端末内保存のため、他の端末とは成績を共有しません。</p>
+      </div>
+    </section>
   </main>
-</section>
 </div>
+
 <script>
+/* ===== データ層（既存仕様を維持：キー名・構造・出題ロジックは変更なし） ===== */
 let BANK = [];
 const KEY="dailyQuizPrototypeV2",OLD_KEY="dailyQuizPrototypeV1",DAILY_COUNT=20;
 const GENRES=["自然科学","社会・経済","歴史・地理","言語・国語","生活・技術","エンタメ・文化","スポーツ"];
@@ -75,100 +454,445 @@ function genreOf(q){
   return "エンタメ・文化";
 }
 const BANK_BY_ID=()=>Object.fromEntries(BANK.map(q=>[q.id,q]));
-function escapeHtml(value){return String(value??'').replace(/[&<>\"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[ch]))}
+function escapeHtml(value){return String(value??'').replace(/[&<>\"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
 const dateKey=()=>{const d=new Date();return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'}).format(d)};
 const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
 function load(){try{const current=JSON.parse(localStorage.getItem(KEY));if(current)return current;const old=JSON.parse(localStorage.getItem(OLD_KEY));if(old){const migrated={history:old.history||{},seen:Array.isArray(old.seen)?old.seen:[],attempts:old.attempts||{}};localStorage.setItem(KEY,JSON.stringify(migrated));return migrated}}catch{}return {history:{},seen:[],attempts:{},hundredHistory:[],hundredSeen:[]}}
 let db=load(),current=null,questionIndex=0,selected=null,hundredCurrent=null,hundredIndex=0,hundredSelected=null,hundredTimerHandle=null;
+let advanceTimer=null,hundredAdvanceTimer=null;
 function save(){db.hundredHistory ||= [];db.hundredSeen ||= [];localStorage.setItem(KEY,JSON.stringify(db))}
 const today=()=>dateKey();
 function getDaily(){return db.history[today()]}
 function getTotal(){return Object.values(db.history).reduce((s,h)=>s+(Number(h.correct)||0),0)+(db.hundredHistory||[]).reduce((s,h)=>s+(Number(h.correct)||0),0)}
 function getTotalAnswered(){return Object.values(db.history).reduce((s,h)=>s+(Number(h.total)||0),0)+(db.hundredHistory||[]).reduce((s,h)=>s+(Number(h.total)||0),0)}
 function getAccuracy(){const n=getTotalAnswered();return n?Math.round(getTotal()/n*100):0}
-function ensure(){db.hundredHistory ||= [];db.hundredSeen ||= [];document.getElementById('userPill').textContent='端末内保存';renderHome()}
-function renderHome(){const h=getDaily();document.getElementById('todayScore').textContent=h?`${h.correct}/${h.total}`:'—';document.getElementById('todaySub').textContent=h?`今日の正答率 ${Math.round(h.correct/h.total*100)}%`:'今日の挑戦はまだ';document.getElementById('totalCorrect').textContent=getTotal();document.getElementById('homeAccuracy').textContent=getTotalAnswered()?getAccuracy()+'%':'—';document.getElementById('startQuiz').textContent=h?'今日の結果を見る':'今日のクイズを始める';document.getElementById('startQuiz').disabled=false;document.getElementById('homeQuizTitle').textContent=h?'今日の挑戦は完了！':'20問チャレンジ';document.getElementById('homeQuizDesc').textContent=h?'本日の結果は保存されています。明日また挑戦しよう。':`全${DAILY_COUNT}問・選択式。未出題の問題から出題します。`;renderProfile()}
-function setTab(tab){document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));document.querySelectorAll('main>section').forEach(s=>s.classList.add('hidden'));document.getElementById('tab-'+tab).classList.remove('hidden');if(tab==='profile')renderProfile();if(tab==='hundred'&&!hundredCurrent)renderHundredHome()}
+function ensure(){
+  // 読み込んだデータに欠けている配列だけを補う（既存の値には触れない）
+  if(!db.history||typeof db.history!=='object')db.history={};
+  if(!Array.isArray(db.seen))db.seen=[];
+  db.hundredHistory ||= [];db.hundredSeen ||= [];
+  renderHome();
+}
+
+/* ===== 表示用ヘルパー（読み取り専用） ===== */
+const $=id=>document.getElementById(id);
+const pct=(c,t)=>t?Math.round(c/t*100):0;
+const LETTERS=['A','B','C','D'];
+const FONT='system-ui,-apple-system,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif';
+function shiftDateKey(key,days){const [y,m,d]=key.split('-').map(Number);return new Date(Date.UTC(y,m-1,d+days)).toISOString().slice(0,10)}
+function getStreak(){const days=new Set(Object.keys(db.history||{}));let k=today();const todayDone=days.has(k);if(!todayDone)k=shiftDateKey(k,-1);let n=0;while(days.has(k)&&n<10000){n++;k=shiftDateKey(k,-1)}return {n,todayDone}}
+function jstDate(iso){if(!iso)return '';try{return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(iso))}catch{return String(iso).slice(0,10)}}
+// 出題済みID：デイリーの seen ＋ 100問斬りの hundredSeen ＋ 過去の100問斬り記録に含まれる問題
+// （過去の記録は読み取るだけで、保存データは書き換えない）
+function usedIds(){const s=new Set([...(db.seen||[]),...(db.hundredSeen||[])]);
+  // 挑戦中のもう一方のモードに割り当て済みの問題も除外（同じ問題が両方に出ないように）
+  for(const q of [...(current?.questions||[]),...(hundredCurrent?.questions||[])])s.add(q.id);for(const h of (db.hundredHistory||[]))for(const a of (h.answers||[]))if(a&&a.id)s.add(a.id);return s}
+function unusedQuestions(){const used=usedIds();return BANK.filter(q=>!used.has(q.id))}
+function unseenCount(){return unusedQuestions().length}
+function renderSegs(el,answers,total,activeIndex=-1,fallbackDone=0){
+  if(!el)return;let html='';
+  for(let i=0;i<total;i++){const a=answers&&answers[i];let c='';if(a)c=a.correct?'ok':'ng';else if(i<fallbackDone)c='done';else if(i===activeIndex)c='now';html+=`<i class="${c}"></i>`}
+  el.innerHTML=html;
+}
+function genreRows(stats,{tags=true}={}){
+  const rated=GENRES.filter(g=>stats[g].total>0);
+  let best=null,weak=null;
+  if(tags&&rated.length>=2){const r=g=>stats[g].correct/stats[g].total;best=rated.reduce((a,b)=>r(b)>r(a)?b:a);weak=rated.reduce((a,b)=>r(b)<r(a)?b:a);if(r(best)===r(weak)){best=weak=null}}
+  return GENRES.map(g=>{const s=stats[g],rate=s.total?Math.round(s.correct/s.total*100):null;
+    const tag=g===best?'<span class="tag best">得意</span>':g===weak?'<span class="tag weak">苦手</span>':'';
+    return `<div class="g"><div class="g-name"><span>${escapeHtml(g)}</span></div><div class="g-track"><div class="g-fill" style="width:${rate===null?0:rate}%"></div></div><span class="g-rate num ${rate===null?'none':''}">${rate===null?'—':rate+'%'}</span><span class="g-count num">${s.correct} / ${s.total}問 ${tag}</span></div>`}).join('');
+}
+
+/* ===== ホーム ===== */
+function renderHome(){
+  const h=getDaily(),live=!h&&current;
+  try{$('homeDate').textContent=new Intl.DateTimeFormat('ja-JP',{timeZone:'Asia/Tokyo',month:'long',day:'numeric',weekday:'short'}).format(new Date())}catch{}
+  const btn=$('startQuiz');btn.disabled=!BANK.length;
+  if(h){
+    $('todayScore').innerHTML=`${h.correct}<small>/ ${h.total}</small>`;
+    $('todaySub').textContent=`正答率 ${pct(h.correct,h.total)}%`;
+    $('homeQuizTitle').textContent='今日の挑戦は完了';
+    $('homeQuizDesc').textContent='結果は保存済みです。明日また新しい20問に挑戦できます。';
+    btn.textContent='今日の結果を見る';
+    renderSegs($('homeSegs'),h.answers,DAILY_COUNT,-1,Array.isArray(h.answers)?0:DAILY_COUNT);
+  }else if(live){
+    $('todayScore').innerHTML=`${current.correct}<small>/ ${current.answers.length}</small>`;
+    $('todaySub').textContent='挑戦中';
+    $('homeQuizTitle').textContent='今日の20問に挑戦中';
+    $('homeQuizDesc').textContent=`第${Math.min(questionIndex+1,DAILY_COUNT)}問から続けられます。`;
+    btn.textContent='続きから再開';
+    renderSegs($('homeSegs'),current.answers,DAILY_COUNT,current.answers.length);
+  }else{
+    $('todayScore').textContent='—';
+    $('todaySub').textContent='まだ挑戦していません';
+    $('homeQuizTitle').textContent='今日の20問';
+    $('homeQuizDesc').textContent=BANK.length?`未出題の問題から${DAILY_COUNT}問。全問選択式です。`:'問題データを読み込み中です。';
+    btn.textContent='今日のクイズを始める';
+    renderSegs($('homeSegs'),[],DAILY_COUNT);
+  }
+  const answered=getTotalAnswered(),st=getStreak();
+  $('totalCorrect').textContent=getTotal();
+  $('homeAccuracy').textContent=answered?getAccuracy()+'%':'—';
+  $('homeAnswered').innerHTML=`${answered}<small>問</small>`;
+  $('homeStreak').innerHTML=`${st.n}<small>日</small>`;
+  $('homeStreakSub').textContent=st.todayDone||!st.n?'デイリー完了日で計算':`今日解くと${st.n+1}日`;
+  $('homeDays').innerHTML=`${Object.keys(db.history).length}<small>日</small>`;
+  $('homeUnseen').textContent=BANK.length?`未出題 ${unseenCount()} / ${BANK.length}問`:'未出題 —';
+  $('homeGenres').innerHTML=genreRows(getCombinedGenreStats());
+}
+
+/* ===== タブ ===== */
+let activeTab='home';
+function setTab(tab){
+  activeTab=tab;
+  document.querySelectorAll('.nav button').forEach(b=>{const on=b.dataset.tab===tab;b.classList.toggle('active',on);b.setAttribute('aria-current',on?'page':'false')});
+  document.querySelectorAll('main>section').forEach(s=>s.classList.add('hidden'));
+  $('tab-'+tab).classList.remove('hidden');
+  if(tab==='home')renderHome();
+  if(tab==='quiz')renderQuizTab();
+  if(tab==='profile')renderProfile();
+  if(tab==='hundred'&&!hundredCurrent)renderHundredHome();
+  window.scrollTo(0,0);
+}
 document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
-document.getElementById('startQuiz').onclick=()=>{if(getDaily()){setTab('quiz');showSavedResult();return}startQuiz()};
-document.getElementById('startHundredHome').onclick=()=>{setTab('hundred');renderHundredHome()};
-document.getElementById('startHundred').onclick=startHundred;
-document.getElementById('hundredHome').onclick=()=>{stopHundredTimer();setTab('home');renderHome()};
+function showQuizView(v){['quizIdle','questionArea','resultArea'].forEach(id=>$(id).classList.toggle('hidden',id!==v))}
+function renderQuizTab(){
+  if(getDaily()){showSavedResult();return}
+  if(current){showQuizView('questionArea');return}
+  renderSegs($('idleSegs'),[],DAILY_COUNT);
+  $('idleStart').disabled=!BANK.length;
+  showQuizView('quizIdle');
+}
+function onStartDaily(){if(getDaily()){setTab('quiz');return}if(current){setTab('quiz');return}startQuiz()}
+$('startQuiz').onclick=onStartDaily;
+$('idleStart').onclick=onStartDaily;
+$('startHundredHome').onclick=()=>{setTab('hundred')};
+$('goRecords').onclick=()=>{setTab('profile');setRecView('stats')};
+$('startHundred').onclick=startHundred;
+$('hundredAgain').onclick=startHundred;
+$('hundredHome').onclick=()=>{stopHundredTimer();setTab('home')};
+$('resultHome').onclick=()=>setTab('home');
+$('resultReview').onclick=()=>{setTab('profile');setRecView('history')};
+
+/* ===== 回答UI（デイリー・100問斬り共通） ===== */
+function buildAnswers(container,q,onPick){
+  container.innerHTML='';
+  LETTERS.forEach((l,i)=>{const b=document.createElement('button');b.className='answer';b.type='button';
+    b.innerHTML=`<span class="letter">${l}</span><span class="txt"></span><span class="mk" aria-hidden="true"></span>`;
+    b.querySelector('.txt').textContent=q.a[i];b.onclick=()=>onPick(i,b);container.appendChild(b)});
+}
+function markAnswers(container,q,choice){
+  container.querySelectorAll('.answer').forEach((b,i)=>{b.disabled=true;
+    if(i===q.c){b.classList.add('correct');b.querySelector('.mk').textContent='正解'}
+    else if(i===choice){b.classList.add('wrong');b.querySelector('.mk').textContent='✕'}
+    else b.classList.add('dim')});
+}
+function showFeedback(el,q,ok){
+  el.className='feedback '+(ok?'ok':'ng');el.innerHTML='';
+  const head=document.createElement('div');const s=document.createElement('strong');s.textContent=ok?'正解！':'不正解';head.appendChild(s);
+  if(!ok){head.appendChild(document.createTextNode(`　正解は ${LETTERS[q.c]}「${q.a[q.c]}」`))}
+  el.appendChild(head);
+  if(q.e&&String(q.e).trim()){const p=document.createElement('p');p.className='exp';p.textContent=q.e;el.appendChild(p)}
+  el.classList.remove('hidden');
+}
+const hasExplanation=q=>!!(q.e&&String(q.e).trim());
+
+/* ===== 100問斬り ===== */
 function fmtTime(sec){sec=Math.max(0,Math.floor(sec||0));const h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;return h?`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`:`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`}
 function stopHundredTimer(){if(hundredTimerHandle){clearInterval(hundredTimerHandle);hundredTimerHandle=null}}
-function renderHundredHome(){const last=(db.hundredHistory||[]).slice(-1)[0];document.getElementById('hundredLastAccuracy').textContent=last?Math.round(last.correct/last.total*100)+'%':'—';document.getElementById('hundredTimer').textContent='00:00';document.getElementById('hundredProgress').textContent='0 / 100';document.getElementById('hundredQuestionArea').classList.add('hidden');document.getElementById('hundredResultArea').classList.add('hidden');document.getElementById('startHundred').classList.remove('hidden')}
-function startHundred(){stopHundredTimer();hundredCurrent={questions:shuffle(BANK).slice(0,100),correct:0,answers:[],started:Date.now(),questionStarted:Date.now()};hundredIndex=0;document.getElementById('hundredQuestionArea').classList.remove('hidden');document.getElementById('hundredResultArea').classList.add('hidden');document.getElementById('startHundred').classList.add('hidden');setTab('hundred');showHundredQuestion();hundredTimerHandle=setInterval(()=>{if(!hundredCurrent)return;const elapsed=(Date.now()-hundredCurrent.started)/1000;document.getElementById('hundredTimer').textContent=fmtTime(elapsed);document.getElementById('hundredElapsedSmall').textContent=fmtTime(elapsed)},250)}
-function showHundredQuestion(){hundredSelected=null;const q=hundredCurrent.questions[hundredIndex];document.getElementById('hundredQuestionCount').textContent=`第${hundredIndex+1}問 / 100`;document.getElementById('hundredProgress').textContent=`${hundredIndex} / 100`;document.getElementById('hundredProgressBar').style.width=`${hundredIndex}%`;document.getElementById('hundredGenre').textContent=genreOf(q);document.getElementById('hundredQuestionText').textContent=q.q;document.getElementById('hundredAnswers').innerHTML='';document.getElementById('hundredFeedback').classList.add('hidden');['A','B','C','D'].forEach((l,i)=>{const b=document.createElement('button');b.className='answer';b.innerHTML=`<span class="letter">${l}</span><span></span>`;b.querySelector('span:last-child').textContent=q.a[i];b.onclick=()=>submitHundredAnswer(i,b);document.getElementById('hundredAnswers').appendChild(b)});hundredCurrent.questionStarted=Date.now()}
-function submitHundredAnswer(choice,clicked){if(hundredSelected!==null||!hundredCurrent)return;hundredSelected=choice;const q=hundredCurrent.questions[hundredIndex],ok=choice===q.c,answerSeconds=(Date.now()-hundredCurrent.questionStarted)/1000;if(ok)hundredCurrent.correct++;hundredCurrent.answers.push({id:q.id,selected:choice,correct:ok,seconds:answerSeconds});document.querySelectorAll('#hundredAnswers .answer').forEach((b,i)=>{b.disabled=true;if(i===q.c)b.classList.add('correct');else if(i===choice)b.classList.add('wrong')});document.getElementById('hundredFeedback').textContent=(ok?'正解！ ':'不正解。 ')+q.e;document.getElementById('hundredFeedback').classList.remove('hidden');document.getElementById('hundredProgress').textContent=`${hundredIndex+1} / 100`;document.getElementById('hundredProgressBar').style.width=`${hundredIndex+1}%`;setTimeout(()=>{if(!hundredCurrent)return;hundredIndex++;if(hundredIndex<100)showHundredQuestion();else finishHundred()},850)}
-function finishHundred(){stopHundredTimer();const elapsed=(Date.now()-hundredCurrent.started)/1000;const record={correct:hundredCurrent.correct,total:100,elapsed,averageSeconds:hundredCurrent.answers.reduce((a,x)=>a+x.seconds,0)/100,answers:hundredCurrent.answers,completedAt:new Date().toISOString()};db.hundredHistory ||= [];db.hundredHistory.push(record);save();hundredCurrent=null;showHundredResult(record)}
-function showHundredResult(record){document.getElementById('hundredQuestionArea').classList.add('hidden');document.getElementById('hundredResultArea').classList.remove('hidden');document.getElementById('hundredResultScore').textContent=`${record.correct} / 100`;document.getElementById('hundredResultAccuracy').textContent=Math.round(record.correct/100*100)+'%';document.getElementById('hundredAverageTime').textContent=record.averageSeconds.toFixed(1)+'秒';document.getElementById('hundredResultElapsed').textContent=`総タイム：${fmtTime(record.elapsed)}（1問あたりの平均回答時間は、問題を表示してから回答確定までで計算）`;drawRadar(document.getElementById('hundredResultRadar'),getHundredGenreStats(record));document.getElementById('shareHundredImage').onclick=()=>shareHundredImage(record);document.getElementById('startHundred').classList.remove('hidden');renderHundredHome();document.getElementById('hundredResultArea').classList.remove('hidden')}
+function renderHundredHome(){
+  const hist=db.hundredHistory||[],last=hist.slice(-1)[0];
+  $('hundredLastAccuracy').textContent=last?pct(last.correct,last.total)+'%':'—';
+  $('hundredLastSub').textContent=last?`${last.correct} / ${last.total}問　${fmtTime(last.elapsed)}`:'記録なし';
+  $('hundredCountIntro').innerHTML=`${hist.length}<small>回</small>`;
+  const best=hist.reduce((b,h)=>(!b||(Number(h.correct)||0)>(Number(b.correct)||0))?h:b,null);
+  $('hundredBestSub').textContent=best?`自己ベスト ${best.correct}問正解`:'自己ベスト —';
+  $('hundredTimer').textContent='00:00';$('hundredProgress').textContent='0';
+  const left=unseenCount();
+  $('startHundred').disabled=left<100;
+  $('hundredUnseen').textContent=left<100?`未出題の問題が${left}問のため、100問斬りは開始できません。問題を追加すると再開できます。`:`未出題 ${left}問（1回の挑戦で100問を使います）`;
+  $('hundredUnseen').classList.toggle('warn',left<100);
+  $('hundredQuestionArea').classList.add('hidden');$('hundredResultArea').classList.add('hidden');$('hundredIntro').classList.remove('hidden');
+}
+function startHundred(){
+  const pool=unusedQuestions();
+  if(pool.length<100){alert(`未出題の問題が${pool.length}問しかありません。100問斬りには未出題の問題が100問必要です。`);renderHundredHome();return}
+  stopHundredTimer();clearTimeout(hundredAdvanceTimer);
+  hundredCurrent={questions:shuffle(pool).slice(0,100),correct:0,answers:[],started:Date.now(),questionStarted:Date.now()};hundredIndex=0;
+  $('hundredIntro').classList.add('hidden');$('hundredResultArea').classList.add('hidden');$('hundredQuestionArea').classList.remove('hidden');
+  $('hundredShareMsg').textContent='';
+  setTab('hundred');showHundredQuestion();
+  hundredTimerHandle=setInterval(()=>{if(!hundredCurrent)return;const elapsed=(Date.now()-hundredCurrent.started)/1000;$('hundredTimer').textContent=fmtTime(elapsed);$('hundredElapsedSmall').textContent=fmtTime(elapsed)},250);
+}
+function updateHundredLive(done){
+  $('hundredProgress').textContent=`${done}`;$('hundredRemain').textContent=100-done;$('hundredScore').textContent=hundredCurrent.correct;
+  $('hundredProgressBar').style.width=`${done}%`;
+  renderSegs($('hundredSegs'),hundredCurrent.answers,100,hundredCurrent.answers.length<100?hundredCurrent.answers.length:-1);
+}
+function showHundredQuestion(){
+  hundredSelected=null;const q=hundredCurrent.questions[hundredIndex];
+  $('hundredQuestionCount').innerHTML=`第${hundredIndex+1}問 <small>/ 100</small>`;
+  $('hundredGenre').textContent=genreOf(q);$('hundredQuestionText').textContent=q.q;
+  $('hundredFeedback').classList.add('hidden');
+  buildAnswers($('hundredAnswers'),q,(i,b)=>submitHundredAnswer(i,b));
+  updateHundredLive(hundredIndex);
+  hundredCurrent.questionStarted=Date.now();
+}
+function submitHundredAnswer(choice,clicked){
+  if(hundredSelected!==null||!hundredCurrent)return;hundredSelected=choice;
+  const q=hundredCurrent.questions[hundredIndex],ok=choice===q.c,answerSeconds=(Date.now()-hundredCurrent.questionStarted)/1000;
+  if(ok)hundredCurrent.correct++;
+  hundredCurrent.answers.push({id:q.id,selected:choice,correct:ok,seconds:answerSeconds});
+  db.hundredSeen ||= [];if(!db.hundredSeen.includes(q.id)){db.hundredSeen.push(q.id);save()}
+  markAnswers($('hundredAnswers'),q,choice);showFeedback($('hundredFeedback'),q,ok);
+  updateHundredLive(hundredIndex+1);
+  const run=hundredCurrent;
+  hundredAdvanceTimer=setTimeout(()=>{if(!hundredCurrent||hundredCurrent!==run)return;hundredIndex++;if(hundredIndex<100)showHundredQuestion();else finishHundred()},850);
+}
+function finishHundred(){
+  stopHundredTimer();
+  const elapsed=(Date.now()-hundredCurrent.started)/1000;
+  const record={correct:hundredCurrent.correct,total:100,elapsed,averageSeconds:hundredCurrent.answers.reduce((a,x)=>a+x.seconds,0)/100,answers:hundredCurrent.answers,completedAt:new Date().toISOString()};
+  db.hundredHistory ||= [];db.hundredHistory.push(record);save();hundredCurrent=null;showHundredResult(record);
+}
+function showHundredResult(record){
+  renderHundredHome();
+  $('hundredIntro').classList.add('hidden');$('hundredQuestionArea').classList.add('hidden');$('hundredResultArea').classList.remove('hidden');
+  $('hundredResultScore').innerHTML=`${record.correct}<small>/ 100</small>`;
+  $('hundredResultAccuracy').textContent=Math.round(record.correct/100*100)+'%';
+  $('hundredAverageTime').textContent=record.averageSeconds.toFixed(1)+'秒';
+  $('hundredResultElapsed').textContent=`総タイム ${fmtTime(record.elapsed)}。平均回答時間は、問題を表示してから回答を確定するまでの時間で計算しています。`;
+  const canvas=$('hundredResultRadar');canvas._stats=getHundredGenreStats(record);
+  requestAnimationFrame(()=>renderRadarCanvas(canvas,canvas._stats));
+  $('shareHundredImage').onclick=()=>shareHundredImage(record);
+  window.scrollTo(0,0);
+}
 
-function startQuiz(){const seen=new Set(db.seen||[]),unseen=BANK.filter(q=>!seen.has(q.id));if(unseen.length<DAILY_COUNT){alert(`未出題の問題が${unseen.length}問しかありません。現在の問題数は${BANK.length}問です。再出題しない設定を守るには、問題バンクを増やす必要があります。`);return}current={questions:shuffle(unseen).slice(0,DAILY_COUNT),correct:0,answers:[],started:Date.now()};questionIndex=0;document.getElementById('questionArea').classList.remove('hidden');document.getElementById('resultArea').classList.add('hidden');setTab('quiz');showQuestion()}
-function showQuestion(){selected=null;const q=current.questions[questionIndex];document.getElementById('questionCount').textContent=`第${questionIndex+1}問 / ${DAILY_COUNT}`;document.getElementById('answeredCount').textContent=`回答 ${questionIndex} / ${DAILY_COUNT}`;document.getElementById('progressBar').style.width=`${questionIndex/DAILY_COUNT*100}%`;document.getElementById('qGenre').textContent=genreOf(q);document.getElementById('qDifficulty').textContent='ジャンル問題';document.getElementById('questionText').textContent=q.q;document.getElementById('answers').innerHTML='';document.getElementById('feedback').classList.add('hidden');['A','B','C','D'].forEach((l,i)=>{const b=document.createElement('button');b.className='answer';b.innerHTML=`<span class="letter">${l}</span><span></span>`;b.querySelector('span:last-child').textContent=q.a[i];b.onclick=()=>submitAnswer(i);document.getElementById('answers').appendChild(b)});document.getElementById('quizNote').textContent='選択肢をタップすると即判定'}
-function submitAnswer(choice){if(selected!==null)return;selected=choice;const q=current.questions[questionIndex],ok=choice===q.c;if(ok)current.correct++;current.answers.push({id:q.id,selected:choice,correct:ok});if(!db.seen.includes(q.id))db.seen.push(q.id);save();document.querySelectorAll('#answers .answer').forEach((b,i)=>{b.disabled=true;if(i===q.c)b.classList.add('correct');else if(i===choice)b.classList.add('wrong')});document.getElementById('feedback').textContent=(ok?'正解！ ':'不正解。 ')+q.e;document.getElementById('feedback').classList.remove('hidden');document.getElementById('answeredCount').textContent=`回答 ${questionIndex+1} / ${DAILY_COUNT}`;document.getElementById('progressBar').style.width=`${(questionIndex+1)/DAILY_COUNT*100}%`;setTimeout(()=>{if(!current)return;questionIndex++;if(questionIndex<DAILY_COUNT)showQuestion();else finishQuiz()},850)}
-function finishQuiz(){const elapsed=Math.round((Date.now()-current.started)/1000);db.history[today()]={correct:current.correct,total:DAILY_COUNT,elapsed,questionIds:current.questions.map(q=>q.id),answers:current.answers,completedAt:new Date().toISOString()};save();showSavedResult()}
-function showSavedResult(){const h=getDaily();if(!h)return;document.getElementById('questionArea').classList.add('hidden');document.getElementById('resultArea').classList.remove('hidden');document.getElementById('resultScore').textContent=`${h.correct} / ${h.total}`;document.getElementById('resultAccuracy').textContent=`今日の正答率：${Math.round(h.correct/h.total*100)}%`;document.getElementById('resultTotalAccuracy').textContent=`累計正答率：${getAccuracy()}%（${getTotal()} / ${getTotalAnswered()}問）`;document.getElementById('resultMessage').textContent=h.correct===DAILY_COUNT?'満点！すばらしい！':h.correct>=DAILY_COUNT*.7?'好成績！明日も挑戦しよう。':'今日の挑戦おつかれさま！明日も知識を増やそう。';document.getElementById('progressBar').style.width='100%';document.getElementById('shareImage').onclick=shareResultImage;document.getElementById('resultHome').onclick=()=>{setTab('home');renderHome()};setTab('quiz');renderHome()}
+/* ===== デイリー ===== */
+function startQuiz(){
+  const unseen=unusedQuestions();
+  if(unseen.length<DAILY_COUNT){alert(`未出題の問題が${unseen.length}問しかありません。現在の問題数は${BANK.length}問です。再出題しない設定を守るには、問題バンクを増やす必要があります。`);return}
+  current={questions:shuffle(unseen).slice(0,DAILY_COUNT),correct:0,answers:[],started:Date.now()};questionIndex=0;
+  setTab('quiz');showQuestion();
+}
+function showQuestion(){
+  selected=null;const q=current.questions[questionIndex];
+  showQuizView('questionArea');
+  $('questionCount').innerHTML=`第${questionIndex+1}問 <small>/ ${DAILY_COUNT}</small>`;
+  $('answeredCount').textContent=`回答 ${questionIndex} / ${DAILY_COUNT}`;
+  renderSegs($('quizSegs'),current.answers,DAILY_COUNT,questionIndex);
+  $('qGenre').textContent=genreOf(q);$('qDifficulty').textContent='デイリー';
+  $('questionText').textContent=q.q;
+  $('feedback').classList.add('hidden');$('nextWrap').classList.add('hidden');
+  buildAnswers($('answers'),q,i=>submitAnswer(i));
+  $('quizNote').textContent='選択肢をタップすると即判定';$('quizNote').classList.remove('hidden');
+}
+function submitAnswer(choice){
+  if(selected!==null||!current)return;selected=choice;
+  const q=current.questions[questionIndex],ok=choice===q.c;
+  if(ok)current.correct++;
+  current.answers.push({id:q.id,selected:choice,correct:ok});
+  if(!db.seen.includes(q.id))db.seen.push(q.id);save();
+  markAnswers($('answers'),q,choice);showFeedback($('feedback'),q,ok);
+  $('answeredCount').textContent=`回答 ${questionIndex+1} / ${DAILY_COUNT}`;
+  renderSegs($('quizSegs'),current.answers,DAILY_COUNT);
+  const run=current;
+  const go=()=>{advanceTimer=null;if(!current||current!==run)return;questionIndex++;if(questionIndex<DAILY_COUNT)showQuestion();else finishQuiz()};
+  if(hasExplanation(q)){
+    // 解説がある問題だけ、読み終えてから進めるようにボタンを表示
+    $('quizNote').classList.add('hidden');$('nextWrap').classList.remove('hidden');
+    const nb=$('nextBtn');nb.disabled=false;nb.textContent=questionIndex+1<DAILY_COUNT?'次の問題へ':'結果を見る';
+    nb.onclick=()=>{nb.disabled=true;go()};
+  }else advanceTimer=setTimeout(go,850);
+}
+function finishQuiz(){
+  const elapsed=Math.round((Date.now()-current.started)/1000);
+  db.history[today()]={correct:current.correct,total:DAILY_COUNT,elapsed,questionIds:current.questions.map(q=>q.id),answers:current.answers,completedAt:new Date().toISOString()};
+  save();current=null;if(activeTab==='quiz')showSavedResult();else renderHome();
+}
+function showSavedResult(){
+  const h=getDaily();if(!h)return;
+  if(activeTab!=='quiz'){setTab('quiz');return}
+  showQuizView('resultArea');
+  $('resultScore').innerHTML=`${h.correct}<small>/ ${h.total}</small>`;
+  renderSegs($('resultSegs'),h.answers,DAILY_COUNT,-1,Array.isArray(h.answers)?0:DAILY_COUNT);
+  $('resultAccuracy').textContent=`${pct(h.correct,h.total)}%`;
+  $('resultTotalAccuracy').textContent=`${getAccuracy()}%`;
+  $('resultTotalSub').textContent=`${getTotal()} / ${getTotalAnswered()}問`;
+  $('resultMessage').textContent=h.correct===DAILY_COUNT?'満点！すばらしい！':h.correct>=DAILY_COUNT*.7?'好成績！明日も挑戦しよう。':'今日の挑戦おつかれさま！明日も知識を増やそう。';
+  $('shareImage').onclick=shareResultImage;
+}
+
+/* ===== 集計（既存ロジックそのまま） ===== */
 function blankStats(){return Object.fromEntries(GENRES.map(g=>[g,{correct:0,total:0}]))}
 function addAnswersToStats(stats,answers){const byId=BANK_BY_ID();for(const ans of (answers||[])){const q=byId[ans.id];if(!q)continue;const g=genreOf(q);stats[g].total++;if(ans.correct)stats[g].correct++;}return stats}
 function getDailyGenreStats(){const stats=blankStats();for(const h of Object.values(db.history))addAnswersToStats(stats,h.answers);return stats}
 function getHundredGenreStats(record=null){const stats=blankStats();const records=record?[record]:(db.hundredHistory||[]);for(const h of records)addAnswersToStats(stats,h.answers);return stats}
-function getCombinedGenreStats(){const stats=getDailyGenreStats();for(const g of GENRES){const h=getHundredGenreStats()[g];stats[g].correct+=h.correct;stats[g].total+=h.total;}return stats}
+function getCombinedGenreStats(){const stats=getDailyGenreStats();const hs=getHundredGenreStats();for(const g of GENRES){stats[g].correct+=hs[g].correct;stats[g].total+=hs[g].total;}return stats}
 function getGenreStats(){return getCombinedGenreStats()}
-function drawRadar(canvas,stats,forShare=false){
-  if(!canvas)return;
-  const ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height;
-  if(!forShare)ctx.clearRect(0,0,w,h);
-  // Keep the chart inside its own visual area; the share image has headings above and footer below.
-  const cx=w/2, cy=forShare?h*.635:h*.49;
-  const r=forShare?Math.min(w*.225,h*.235):Math.min(w*.255,h*.285);
-  const values=GENRES.map(g=>stats[g].total?stats[g].correct/stats[g].total:0);
-  ctx.lineWidth=2;ctx.strokeStyle=forShare?'rgba(255,255,255,.22)':'#343754';
-  for(let level=1;level<=4;level++){
-    ctx.beginPath();GENRES.forEach((g,i)=>{const a=-Math.PI/2+i*2*Math.PI/GENRES.length,rr=r*level/4,x=cx+rr*Math.cos(a),y=cy+rr*Math.sin(a);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.closePath();ctx.stroke();
+
+/* ===== レーダーチャート（ラベルが必ず描画領域内に収まるよう半径を自動計算） ===== */
+function paintRadar(ctx,box,stats,o={}){
+  const s=o.s||1,n=GENRES.length,col=Object.assign({grid:'rgba(150,160,255,.18)',axis:'rgba(150,160,255,.14)',fill:'rgba(94,242,196,.22)',stroke:'#5ef2c4',text:'#eef0ff',pct:'#5ef2c4',none:'#727aa6'},o.colors||{});
+  const vals=GENRES.map(g=>stats[g].total?stats[g].correct/stats[g].total:null);
+  const pctText=i=>vals[i]===null?'—':Math.round(vals[i]*100)+'%';
+  const nameFont=`700 ${13*s}px ${FONT}`,pctFont=`800 ${12.5*s}px ${FONT}`,lh=17*s,gap=8*s,pad=(o.pad??4)*s;
+  const cx=box.x+box.w/2,cy=box.y+box.h/2,ang=i=>-Math.PI/2+i*2*Math.PI/n;
+  ctx.save();ctx.textBaseline='middle';
+  // ラベル案：1行表示 / 「・」で2行に折り返し。半径を大きく取れる方を採用
+  function layout(split){
+    const lines=GENRES.map((g,i)=>[...(split&&g.includes('・')?(()=>{const k=g.indexOf('・');return [g.slice(0,k+1),g.slice(k+1)]})():[g]),pctText(i)]);
+    const widths=lines.map(ls=>Math.max(...ls.map((t,j)=>{ctx.font=j===ls.length-1?pctFont:nameFont;return ctx.measureText(t).width})));
+    const lab=(i,r)=>{const a=ang(i),c=Math.cos(a),sn=Math.sin(a),ax=cx+(r+gap)*c,ay=cy+(r+gap)*sn,w=widths[i],h=lines[i].length*lh;
+      const align=c>.3?'left':c<-.3?'right':'center';const x=align==='left'?ax:align==='right'?ax-w:ax-w/2;const y=sn<-.3?ay-h:sn>.3?ay:ay-h/2;return {x,y,w,h,align}};
+    const fits=r=>GENRES.every((g,i)=>{const b=lab(i,r);return b.x>=box.x+pad&&b.x+b.w<=box.x+box.w-pad&&b.y>=box.y+pad&&b.y+b.h<=box.y+box.h-pad});
+    let lo=6*s,hi=Math.max(lo,Math.min(box.w,box.h)/2);
+    if(fits(hi))lo=hi;else for(let k=0;k<28;k++){const m=(lo+hi)/2;if(fits(m))lo=m;else hi=m}
+    return {r:lo,lines,lab};
   }
-  GENRES.forEach((g,i)=>{const a=-Math.PI/2+i*2*Math.PI/GENRES.length;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));ctx.stroke()});
-  ctx.beginPath();values.forEach((v,i)=>{const a=-Math.PI/2+i*2*Math.PI/GENRES.length,rr=r*v,x=cx+rr*Math.cos(a),y=cy+rr*Math.sin(a);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.closePath();ctx.fillStyle='rgba(121,227,192,.25)';ctx.fill();ctx.strokeStyle='#79e3c0';ctx.lineWidth=forShare?5:4;ctx.stroke();
-  values.forEach((v,i)=>{const a=-Math.PI/2+i*2*Math.PI/GENRES.length;ctx.beginPath();ctx.arc(cx+r*v*Math.cos(a),cy+r*v*Math.sin(a),forShare?6:5,0,Math.PI*2);ctx.fillStyle='#79e3c0';ctx.fill()});
-  const labels={'自然科学':'自然科学','社会・経済':'社会・経済','歴史・地理':'歴史・地理','言語・国語':'言語・国語','生活・技術':'生活・技術','エンタメ・文化':'エンタメ・文化','文化芸術':'文化芸術','語学':'語学','スポーツ':'スポーツ','生活':'生活','社会':'社会','科学':'科学','文化':'文化'};
-  ctx.fillStyle='#f5f6ff';ctx.textBaseline='middle';ctx.font=`${forShare?22:16}px sans-serif`;
-  GENRES.forEach((g,i)=>{
-    const a=-Math.PI/2+i*2*Math.PI/GENRES.length,rr=r+(forShare?39:29),x=cx+rr*Math.cos(a),y=cy+rr*Math.sin(a),label=labels[g]||g;
-    // Align labels outward, then clamp using the actual rendered text width.
-    ctx.textAlign=Math.cos(a)>.25?'left':Math.cos(a)<-.25?'right':'center';
-    const pad=forShare?36:12;
-    const tw=ctx.measureText(label).width;
-    let tx=x;
-    if(ctx.textAlign==='right') tx=Math.max(tw+pad,Math.min(w-pad,tx));
-    else if(ctx.textAlign==='left') tx=Math.max(pad,Math.min(w-tw-pad,tx));
-    else tx=Math.max(tw/2+pad,Math.min(w-tw/2-pad,tx));
-    ctx.fillText(label,tx,y);
-  });
+  const A=layout(false),B=layout(true),L=B.r>A.r*1.08?B:A,r=L.r;
+  ctx.lineWidth=1.2*s;ctx.strokeStyle=col.grid;
+  for(let lv=1;lv<=4;lv++){ctx.beginPath();for(let i=0;i<n;i++){const a=ang(i),rr=r*lv/4,x=cx+rr*Math.cos(a),y=cy+rr*Math.sin(a);i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.closePath();ctx.stroke()}
+  ctx.strokeStyle=col.axis;for(let i=0;i<n;i++){const a=ang(i);ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));ctx.stroke()}
+  if(vals.some(v=>v!==null)){
+    ctx.beginPath();vals.forEach((v,i)=>{const a=ang(i),rr=r*(v||0),x=cx+rr*Math.cos(a),y=cy+rr*Math.sin(a);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.closePath();
+    ctx.fillStyle=col.fill;ctx.fill();ctx.strokeStyle=col.stroke;ctx.lineWidth=2.5*s;ctx.lineJoin='round';ctx.stroke();
+    vals.forEach((v,i)=>{if(v===null)return;const a=ang(i);ctx.beginPath();ctx.arc(cx+r*v*Math.cos(a),cy+r*v*Math.sin(a),3.5*s,0,Math.PI*2);ctx.fillStyle=col.stroke;ctx.fill()});
+  }
+  GENRES.forEach((g,i)=>{const b=L.lab(i,r),ls=L.lines[i];
+    const bx=Math.max(box.x+pad,Math.min(box.x+box.w-pad-b.w,b.x)),by=Math.max(box.y+pad,Math.min(box.y+box.h-pad-b.h,b.y));
+    const tx=b.align==='left'?bx:b.align==='right'?bx+b.w:bx+b.w/2;ctx.textAlign=b.align;
+    ls.forEach((t,j)=>{const last=j===ls.length-1;ctx.font=last?pctFont:nameFont;ctx.fillStyle=last?(vals[i]===null?col.none:col.pct):col.text;ctx.fillText(t,tx,by+lh*(j+.5))})});
+  ctx.restore();
 }
-function renderProfile(){const days=Object.keys(db.history).length;document.getElementById('daysPlayed').textContent=days;document.getElementById('hundredPlayedCount').textContent=(db.hundredHistory||[]).length;document.getElementById('profileCorrect').textContent=getTotal();document.getElementById('overallAccuracy').textContent=getTotalAnswered()?getAccuracy()+'%':'—';const stats=getGenreStats();document.getElementById('genreStats').innerHTML=GENRES.map(g=>{const s=stats[g],rate=s.total?Math.round(s.correct/s.total*100):null;return `<div class="genre-item"><span>${g}</span><div class="genre-track"><div class="genre-fill" style="width:${rate===null?0:rate}%"></div></div><span class="genre-rate">${rate===null?'—':rate+'%'}</span><span class="tiny" style="grid-column:1/-1;margin-top:-8px">${s.correct} / ${s.total}問</span></div>`}).join('');drawRadar(document.getElementById('profileRadar'),getDailyGenreStats());drawRadar(document.getElementById('hundredProfileRadar'),getHundredGenreStats());drawRadar(document.getElementById('combinedProfileRadar'),getCombinedGenreStats());const rows=[...Object.entries(db.history).map(([d,h])=>({date:d,mode:'デイリー',...h})),...(db.hundredHistory||[]).map(h=>({date:(h.completedAt||'').slice(0,10),mode:'100問斬り',...h}))].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,15);document.getElementById('history').innerHTML=rows.length?`<table class="table"><thead><tr><th>モード</th><th>日付</th><th>正解</th><th>正答率</th></tr></thead><tbody>${rows.map(h=>`<tr><td>${h.mode}</td><td>${h.date}</td><td>${h.correct}/${h.total}</td><td>${Math.round(h.correct/h.total*100)}%</td></tr>`).join('')}</tbody></table>`:'<div class="empty">まだ記録がありません。</div>';const byId=BANK_BY_ID();const attempts=[...Object.entries(db.history).map(([date,h])=>({date,mode:'デイリー',...h})),...(db.hundredHistory||[]).map(h=>({date:(h.completedAt||'').slice(0,10),mode:'100問斬り',...h}))].sort((a,b)=>a.date.localeCompare(b.date));const recent=[];for(const at of attempts){for(const ans of (at.answers||[])){const q=byId[ans.id];if(q)recent.push({date:at.date,mode:at.mode,q,ans})}}const last=recent.slice(-20).reverse();document.getElementById('recentQuestions').innerHTML=last.length?last.map((x,i)=>`<div class="feedback"><div class="q-meta"><span>${x.date}</span><span>•</span><span>${x.mode}</span><span>•</span><span>${genreOf(x.q)}</span></div><p><b>${20-i}.</b> ${escapeHtml(x.q.q)}</p><p>${x.ans.correct?'✅ 正解':'❌ 不正解'}：あなたの回答「${escapeHtml(x.q.a[x.ans.selected]||'未記録')}」</p><p class="tiny">正解：${escapeHtml(x.q.a[x.q.c])}</p></div>`).join(''):'<div class="empty">まだ解いた問題がありません。</div>'}
-function shareResultImage(){const h=getDaily();if(!h)return;const canvas=document.getElementById('shareCanvas'),ctx=canvas.getContext('2d'),stats=getDailyGenreStats();const grad=ctx.createLinearGradient(0,0,1080,1350);grad.addColorStop(0,'#17182d');grad.addColorStop(.55,'#30265b');grad.addColorStop(1,'#121827');ctx.fillStyle=grad;ctx.fillRect(0,0,1080,1350);ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.strokeStyle='rgba(169,155,255,.55)';ctx.lineWidth=3;ctx.strokeRect(40,40,1000,1270);ctx.fillStyle='#79e3c0';ctx.font='bold 34px sans-serif';ctx.fillText('DAILY QUIZ',80,112);ctx.fillStyle='#f5f6ff';ctx.font='bold 52px sans-serif';ctx.fillText('YOUR KNOWLEDGE PROFILE',80,190);ctx.fillStyle='#b9b8d9';ctx.font='26px sans-serif';ctx.fillText(today(),82,235);ctx.fillStyle='#f5f6ff';ctx.font='bold 78px sans-serif';ctx.fillText(`${h.correct} / ${h.total}`,80,340);ctx.fillStyle='#b9b8d9';ctx.font='27px sans-serif';ctx.fillText(`今日の正答率  ${Math.round(h.correct/h.total*100)}%`,82,390);ctx.fillStyle='#79e3c0';ctx.font='bold 34px sans-serif';ctx.fillText(`累計正答率  ${getAccuracy()}%`,82,450);ctx.fillStyle='#f5f6ff';ctx.font='bold 28px sans-serif';ctx.fillText('ジャンル別正答率',82,510);const radarLayer=document.createElement('canvas');radarLayer.width=1080;radarLayer.height=1350;drawRadar(radarLayer,stats,true);ctx.drawImage(radarLayer,0,0);ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillStyle='#b9b8d9';ctx.font='23px sans-serif';ctx.fillText(`${getTotal()} correct / ${getTotalAnswered()} answered`,82,1240);ctx.fillStyle='#f5f6ff';ctx.font='25px sans-serif';ctx.fillText('今日も知識をアップデート。',82,1280);canvas.toBlob(async blob=>{if(!blob){document.getElementById('shareMsg').textContent='画像を作成できませんでした。';return}const file=new File([blob],`daily-quiz-${today()}.png`,{type:'image/png'});try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'DAILY QUIZ 今日の結果',text:`今日の正答率 ${Math.round(h.correct/h.total*100)}% / 累計正答率 ${getAccuracy()}%`});document.getElementById('shareMsg').textContent='共有メニューを開いたよ。'}else{const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);document.getElementById('shareMsg').textContent='成績画像を保存したよ。写真アプリやSNSから共有してね。'}}catch(e){if(e.name!=='AbortError')document.getElementById('shareMsg').textContent='共有できませんでした。もう一度試してね。'}},'image/png')}
+function renderRadarCanvas(canvas,stats){
+  if(!canvas||!stats)return;const wrap=canvas.parentElement,cssW=Math.floor(wrap.clientWidth);if(!cssW)return;
+  const cssH=Math.round(Math.max(220,Math.min(cssW*.86,440))),dpr=Math.min(window.devicePixelRatio||1,3);
+  canvas.width=Math.round(cssW*dpr);canvas.height=Math.round(cssH*dpr);canvas.style.width=cssW+'px';canvas.style.height=cssH+'px';
+  const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,cssW,cssH);
+  paintRadar(ctx,{x:0,y:0,w:cssW,h:cssH},stats,{s:cssW<340?.9:1});
+}
+// 互換用：旧コードと同名の関数（canvas全体に描画）
+function drawRadar(canvas,stats){renderRadarCanvas(canvas,stats)}
+if('ResizeObserver' in window){const ro=new ResizeObserver(es=>{for(const e of es){const c=e.target.querySelector('canvas');if(c&&c._stats)renderRadarCanvas(c,c._stats)}});document.querySelectorAll('.radar-wrap').forEach(w=>ro.observe(w))}
+else window.addEventListener('resize',()=>document.querySelectorAll('.radar-wrap canvas').forEach(c=>c._stats&&renderRadarCanvas(c,c._stats)));
 
-function shareHundredImage(record){const canvas=document.getElementById('hundredShareCanvas'),ctx=canvas.getContext('2d');const grad=ctx.createLinearGradient(0,0,1080,1350);grad.addColorStop(0,'#17182d');grad.addColorStop(.55,'#30265b');grad.addColorStop(1,'#121827');ctx.fillStyle=grad;ctx.fillRect(0,0,1080,1350);ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.strokeStyle='rgba(169,155,255,.55)';ctx.lineWidth=3;ctx.strokeRect(40,40,1000,1270);ctx.fillStyle='#79e3c0';ctx.font='bold 38px sans-serif';ctx.fillText('DAILY QUIZ',80,115);ctx.fillStyle='#f5f6ff';ctx.font='bold 58px sans-serif';ctx.fillText('100問斬り',80,205);ctx.font='bold 84px sans-serif';ctx.fillText(`${record.correct} / 100`,80,325);ctx.fillStyle='#b9b8d9';ctx.font='30px sans-serif';ctx.fillText(`正答率 ${record.correct}%`,82,385);ctx.fillText(`総タイム ${fmtTime(record.elapsed)}`,82,440);ctx.fillText(`平均回答時間 ${record.averageSeconds.toFixed(1)}秒`,82,495);ctx.fillStyle='#f5f6ff';ctx.font='bold 30px sans-serif';ctx.fillText('ジャンル別正答率',82,555);const radarLayer=document.createElement('canvas');radarLayer.width=1080;radarLayer.height=1350;drawRadar(radarLayer,getHundredGenreStats(record),true);ctx.drawImage(radarLayer,0,0);ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillStyle='#b9b8d9';ctx.font='25px sans-serif';ctx.fillText('100問に挑戦、知識を磨こう。',82,1280);canvas.toBlob(async blob=>{if(!blob)return;const file=new File([blob],`daily-quiz-100-${Date.now()}.png`,{type:'image/png'});try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'100問斬りの結果'});document.getElementById('hundredShareMsg').textContent='共有メニューを開いたよ。'}else{const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);document.getElementById('hundredShareMsg').textContent='画像を保存したよ。'}}catch(e){if(e.name!=='AbortError')document.getElementById('hundredShareMsg').textContent='共有できませんでした。'}},'image/png')}
+/* ===== 記録画面 ===== */
+let recView='stats',radarMode='combined',qFilter='all',qLimit=20,historyAll=false;
+function setRecView(v){recView=v;document.querySelectorAll('[data-rec]').forEach(b=>{const on=b.dataset.rec===v;b.classList.toggle('active',on);b.setAttribute('aria-selected',on)});$('recStats').classList.toggle('hidden',v!=='stats');$('recHistory').classList.toggle('hidden',v!=='history');renderProfile()}
+document.querySelectorAll('[data-rec]').forEach(b=>b.onclick=()=>setRecView(b.dataset.rec));
+document.querySelectorAll('[data-radar]').forEach(b=>b.onclick=()=>{radarMode=b.dataset.radar;document.querySelectorAll('[data-radar]').forEach(x=>x.classList.toggle('active',x===b));renderRadarPanel()});
+document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{qFilter=b.dataset.f;qLimit=20;document.querySelectorAll('[data-f]').forEach(x=>x.classList.toggle('active',x===b));renderQuestionHistory()});
+$('qMore').onclick=()=>{qLimit+=20;renderQuestionHistory()};
+$('historyMore').onclick=()=>{historyAll=true;renderResultHistory()};
+function renderRadarPanel(){
+  const stats=radarMode==='daily'?getDailyGenreStats():radarMode==='hundred'?getHundredGenreStats():getCombinedGenreStats();
+  const c=$('profileRadar');c._stats=stats;renderRadarCanvas(c,stats);
+  const n=GENRES.reduce((a,g)=>a+stats[g].total,0);
+  $('radarNote').textContent=n?`${radarMode==='daily'?'デイリー':radarMode==='hundred'?'100問斬り':'デイリー＋100問斬り'}の${n}問から集計`:'まだこのモードの記録がありません';
+}
+function allAttempts(){
+  return [...Object.entries(db.history).map(([date,h])=>({date,mode:'デイリー',...h})),...(db.hundredHistory||[]).map(h=>({...h,date:jstDate(h.completedAt),mode:'100問斬り'}))]
+    .sort((a,b)=>(a.date||'').localeCompare(b.date||'')||String(a.completedAt||'').localeCompare(String(b.completedAt||'')));
+}
+function renderResultHistory(){
+  const rows=allAttempts().reverse(),shown=historyAll?rows:rows.slice(0,15);
+  $('history').innerHTML=rows.length?shown.map(h=>{const extra=[];
+    if(Number.isFinite(Number(h.elapsed))&&h.elapsed!=null)extra.push(`タイム ${fmtTime(h.elapsed)}`);
+    if(Number.isFinite(h.averageSeconds))extra.push(`平均 ${h.averageSeconds.toFixed(1)}秒`);
+    return `<div class="res"><span class="mode ${h.mode==='100問斬り'?'h':''}">${h.mode}</span><span class="d num">${escapeHtml(h.date)}</span><span class="s num">${Number(h.correct)||0}/${Number(h.total)||0}<small>${pct(Number(h.correct)||0,Number(h.total)||0)}%</small></span>${extra.length?`<span class="x num">${extra.join('　')}</span>`:''}</div>`}).join(''):'<div class="empty">まだ記録がありません。<br>今日の20問から始めてみましょう。</div>';
+  $('historyMoreWrap').classList.toggle('hidden',historyAll||rows.length<=15);
+}
+function renderQuestionHistory(){
+  const byId=BANK_BY_ID(),list=[];
+  for(const at of allAttempts())for(const ans of (at.answers||[])){const q=byId[ans.id];if(q)list.push({date:at.date,mode:at.mode,q,ans})}
+  list.reverse();
+  const filtered=qFilter==='ng'?list.filter(x=>!x.ans.correct):list,shown=filtered.slice(0,qLimit);
+  $('qCountLabel').textContent=list.length?`全${list.length}問　不正解 ${list.filter(x=>!x.ans.correct).length}問`:'';
+  $('recentQuestions').innerHTML=shown.length?shown.map(x=>{const ok=!!x.ans.correct,sel=x.ans.selected,mine=Number.isInteger(sel)&&x.q.a[sel]!==undefined?`${LETTERS[sel]}. ${escapeHtml(x.q.a[sel])}`:'未記録';
+    return `<article class="hq ${ok?'ok':'ng'}"><div class="hq-meta"><span class="res-mark">${ok?'○ 正解':'✕ 不正解'}</span><span class="num">${escapeHtml(x.date)}</span><span class="pill">${x.mode}</span><span class="pill">${escapeHtml(genreOf(x.q))}</span>${x.q.managementNumber!=null?`<span class="pill num">No.${escapeHtml(x.q.managementNumber)}</span>`:''}</div>
+    <p class="hq-q">${escapeHtml(x.q.q)}</p><dl><dt>あなたの回答</dt><dd class="mine">${mine}</dd><dt>正解</dt><dd class="right">${LETTERS[x.q.c]}. ${escapeHtml(x.q.a[x.q.c])}</dd></dl>${hasExplanation(x.q)?`<p class="exp">${escapeHtml(x.q.e)}</p>`:''}</article>`}).join('')
+    :`<div class="empty">${qFilter==='ng'&&list.length?'不正解の問題はありません。':'まだ解いた問題がありません。'}</div>`;
+  $('qMoreWrap').classList.toggle('hidden',filtered.length<=qLimit);
+}
+function renderProfile(){
+  if(activeTab!=='profile')return;
+  const h=getDaily(),answered=getTotalAnswered();
+  $('profToday').textContent=h?`${h.correct}/${h.total}`:'—';
+  $('profTodayPct').textContent=h?pct(h.correct,h.total)+'%':'—';
+  $('overallAccuracy').textContent=answered?getAccuracy()+'%':'—';
+  $('profAnswered').textContent=answered;
+  $('profileCorrect').textContent=getTotal();
+  $('daysPlayed').textContent=Object.keys(db.history).length;
+  $('profStreak').innerHTML=`${getStreak().n}<small>日</small>`;
+  $('hundredPlayedCount').textContent=(db.hundredHistory||[]).length;
+  if(recView==='stats'){ $('genreStats').innerHTML=genreRows(getGenreStats()); renderRadarPanel(); }
+  else { renderResultHistory(); renderQuestionHistory(); }
+}
 
-document.getElementById('resetData').onclick=()=>{if(confirm('この端末に保存された全記録を消去します。よろしいですか？')){localStorage.removeItem(KEY);localStorage.removeItem(OLD_KEY);db=load();ensure();setTab('home')}};
+/* ===== 共有画像 ===== */
+function shareBg(ctx){const grad=ctx.createLinearGradient(0,0,1080,1350);grad.addColorStop(0,'#0e1030');grad.addColorStop(.55,'#2a2366');grad.addColorStop(1,'#0b1a2e');ctx.fillStyle=grad;ctx.fillRect(0,0,1080,1350);ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.strokeStyle='rgba(94,242,196,.35)';ctx.lineWidth=3;ctx.strokeRect(40,40,1000,1270)}
+function fitText(ctx,text,maxW,size,weight){let s=size;do{ctx.font=`${weight} ${s}px ${FONT}`;s-=2}while(ctx.measureText(text).width>maxW&&s>12)}
+async function deliverImage(canvas,fileName,shareData,msgEl,okShare,okSave,fail){
+  canvas.toBlob(async blob=>{if(!blob){msgEl.textContent='画像を作成できませんでした。';return}const file=new File([blob],fileName,{type:'image/png'});
+    try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],...shareData});msgEl.textContent=okShare}
+      else{const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);msgEl.textContent=okSave}}
+    catch(e){if(e.name!=='AbortError')msgEl.textContent=fail}},'image/png');
+}
+function shareResultImage(){
+  const h=getDaily();if(!h)return;const canvas=$('shareCanvas'),ctx=canvas.getContext('2d'),stats=getDailyGenreStats();
+  shareBg(ctx);
+  ctx.fillStyle='#5ef2c4';ctx.font=`900 34px ${FONT}`;ctx.fillText('DAILY QUIZ',80,112);
+  ctx.fillStyle='#eef0ff';fitText(ctx,'YOUR KNOWLEDGE PROFILE',920,52,800);ctx.fillText('YOUR KNOWLEDGE PROFILE',80,190);
+  ctx.fillStyle='#a2a8d2';ctx.font=`26px ${FONT}`;ctx.fillText(today(),82,235);
+  ctx.fillStyle='#eef0ff';ctx.font=`900 78px ${FONT}`;ctx.fillText(`${h.correct} / ${h.total}`,80,340);
+  ctx.fillStyle='#a2a8d2';ctx.font=`27px ${FONT}`;ctx.fillText(`今日の正答率  ${pct(h.correct,h.total)}%`,82,390);
+  ctx.fillStyle='#5ef2c4';ctx.font=`800 34px ${FONT}`;ctx.fillText(`累計正答率  ${getAccuracy()}%`,82,450);
+  ctx.fillStyle='#eef0ff';ctx.font=`800 28px ${FONT}`;ctx.fillText('ジャンル別正答率',82,510);
+  paintRadar(ctx,{x:70,y:530,w:940,h:660},stats,{s:1.75,pad:10});
+  ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillStyle='#a2a8d2';ctx.font=`23px ${FONT}`;ctx.fillText(`${getTotal()} correct / ${getTotalAnswered()} answered`,82,1240);
+  ctx.fillStyle='#eef0ff';ctx.font=`25px ${FONT}`;ctx.fillText('今日も知識をアップデート。',82,1280);
+  deliverImage(canvas,`daily-quiz-${today()}.png`,{title:'DAILY QUIZ 今日の結果',text:`今日の正答率 ${pct(h.correct,h.total)}% / 累計正答率 ${getAccuracy()}%`},$('shareMsg'),'共有メニューを開きました。','成績画像を保存しました。写真アプリやSNSから共有できます。','共有できませんでした。もう一度試してください。');
+}
+function shareHundredImage(record){
+  const canvas=$('hundredShareCanvas'),ctx=canvas.getContext('2d');shareBg(ctx);
+  ctx.fillStyle='#5ef2c4';ctx.font=`900 38px ${FONT}`;ctx.fillText('DAILY QUIZ',80,115);
+  ctx.fillStyle='#eef0ff';ctx.font=`900 58px ${FONT}`;ctx.fillText('100問斬り',80,205);
+  ctx.font=`900 84px ${FONT}`;ctx.fillText(`${record.correct} / 100`,80,325);
+  ctx.fillStyle='#a2a8d2';ctx.font=`30px ${FONT}`;ctx.fillText(`正答率 ${record.correct}%`,82,385);ctx.fillText(`総タイム ${fmtTime(record.elapsed)}`,82,440);ctx.fillText(`平均回答時間 ${record.averageSeconds.toFixed(1)}秒`,82,495);
+  ctx.fillStyle='#eef0ff';ctx.font=`800 30px ${FONT}`;ctx.fillText('ジャンル別正答率',82,555);
+  paintRadar(ctx,{x:70,y:575,w:940,h:640},getHundredGenreStats(record),{s:1.75,pad:10});
+  ctx.textAlign='left';ctx.textBaseline='alphabetic';ctx.fillStyle='#a2a8d2';ctx.font=`25px ${FONT}`;ctx.fillText('100問に挑戦、知識を磨こう。',82,1280);
+  deliverImage(canvas,`daily-quiz-100-${Date.now()}.png`,{title:'100問斬りの結果'},$('hundredShareMsg'),'共有メニューを開きました。','画像を保存しました。','共有できませんでした。');
+}
+
+/* ===== 記録の消去（既存仕様） ===== */
+$('resetData').onclick=()=>{if(confirm('この端末に保存された全記録を消去します。よろしいですか？')){
+  clearTimeout(advanceTimer);clearTimeout(hundredAdvanceTimer);stopHundredTimer();current=null;hundredCurrent=null;
+  localStorage.removeItem(KEY);localStorage.removeItem(OLD_KEY);db=load();ensure();setTab('home')}};
+
+/* ===== 問題データ読み込み（既存仕様） ===== */
 async function loadQuestionBank(){
-  const status=document.getElementById('bankStatus');
-  try {
+  const status=$('bankStatus');
+  try{
     const response=await fetch('./questions.json',{cache:'no-store'});
-    if(!response.ok) throw new Error('HTTP '+response.status);
+    if(!response.ok)throw new Error('HTTP '+response.status);
     const data=await response.json();
-    if(!Array.isArray(data)||data.length<100) throw new Error('問題データ形式が不正です');
+    if(!Array.isArray(data)||data.length<100)throw new Error('問題データ形式が不正です');
     BANK=data.filter(q=>q&&typeof q.id==='string'&&typeof q.q==='string'&&Array.isArray(q.a)&&q.a.length===4&&Number.isInteger(q.c)&&q.c>=0&&q.c<4);
-    if(BANK.length<100) throw new Error('有効な問題が不足しています');
-    if(status) status.textContent=`問題データ読込完了：${BANK.length}問`;
+    if(BANK.length<100)throw new Error('有効な問題が不足しています');
+    if(status)status.textContent=`問題 ${BANK.length}問`;
     ensure();
-  } catch(error) {
-    if(status) status.textContent='問題データを読み込めません。index.html と questions.json が同じ場所にあるか確認してください。';
-    document.getElementById('startQuiz').disabled=true;
-    document.getElementById('startHundredHome').disabled=true;
-    document.getElementById('startHundred').disabled=true;
+    if(activeTab!=='home')setTab(activeTab);
+  }catch(error){
+    if(status){status.textContent='問題データを読み込めません。index.html と questions.json が同じ場所にあるか確認してください。';status.classList.add('err')}
+    $('startQuiz').disabled=true;$('startHundredHome').disabled=true;$('startHundred').disabled=true;$('idleStart').disabled=true;
+    $('homeQuizDesc').textContent='問題データを読み込めませんでした。ページを再読み込みしてください。';
     console.error('Question bank load failed:',error);
   }
 }
+ensure();
 loadQuestionBank();
 </script>
-</body></html>
+</body>
+</html>
